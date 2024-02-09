@@ -4,7 +4,7 @@
 //creating an array, bc it represents a list. And we have a list of different products. 
 //We will use an object to represent each individual product (bc an obj lets us group multiple values(name,img,price) together)
 
-import {cart} from "../data/cart.js"
+import {cart, addToCart} from "../data/cart.js"
 //if you do {cart as myCart} instead of just {cart}, it renames cart as myCart so that you can use the variable name 'cart' again.
 import {products} from "../data/products.js"
 
@@ -74,38 +74,7 @@ console.log(accumulatedHTML);
 
 document.querySelector('.js-grid-of-prdts').innerHTML = accumulatedHTML;
 
-document.querySelectorAll('.js-add-to-cart-btn').forEach((eBtn) => {
-  eBtn.addEventListener('click', () => {
-    // alert('just making sure this works message')
-
-    //console.log(eBtn.dataset.atrbName) if we clicked the basketball "add to cart" button, this console log will show "Intermediate Size Basketball"
-    //.dataset property gives us all the data attributes attached to this btn elt
-    //.atrb-name in kebab-style is converted to atrbName camelCase style so we use that converted style. And actually, if it was ".atrb-Name", it would be converted to camelCase "atrbname".
-
-    let prodID = eBtn.dataset.atrbId;
-    let prodName = eBtn.dataset.atrbName;
-
-    let repeatedItem = false;
-    let i; //declared outside of forEach so, that it can be used again
-
-    cart.forEach((item) => {
-      if (prodID === item.id) { //does it exist in the cart?
-        repeatedItem = true; //if so, then define repeatedItem as current item
-        i = item; //store item in 'i' for later use
-        // console.log(item)
-      }
-    })
-
-    if (repeatedItem) { //if repeatedItem exits, add +1 to the items qt
-      i.quantity++; //if we just use item.quantity++, it'll say item not defined
-    } else { //else create that item in the cart
-      cart.push({
-        id: prodID,
-        productName: prodName,
-        quantity: 1
-      })
-    }
-
+function updateCartQt() {
     //just added this to display total amount of stuff in the cart
     let totalItemsInCart = 0;
     let qt;
@@ -118,5 +87,18 @@ document.querySelectorAll('.js-add-to-cart-btn').forEach((eBtn) => {
     console.log("Total quantity of stuff in cart: " + totalItemsInCart)
 
     document.querySelector(".js-cart-qty").innerHTML = totalItemsInCart;
+}
+
+document.querySelectorAll('.js-add-to-cart-btn')
+  .forEach((eBtn) => {
+    eBtn.addEventListener('click', () => {
+    //console.log(eBtn.dataset.atrbName) if we clicked the basketball "add to cart" button, this console log will show "Intermediate Size Basketball"
+    //.dataset property gives us all the data attributes attached to this btn elt
+    //.atrb-name in kebab-style is converted to atrbName camelCase style so we use that converted style. And actually, if it was ".atrb-Name", it would be converted to camelCase "atrbname".
+    let prodID = eBtn.dataset.atrbId;
+    let prodName = eBtn.dataset.atrbName;
+
+    addToCart(prodID, prodName)
+    updateCartQt()
   })
 })
