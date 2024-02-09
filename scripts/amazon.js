@@ -4,6 +4,9 @@
 //creating an array, bc it represents a list. And we have a list of different products. 
 //We will use an object to represent each individual product (bc an obj lets us group multiple values(name,img,price) together)
 
+import {cart as myCart} from "../data/cart.js"
+//renames cart as myCart so that you can use the name variable cart again
+
 let accumulatedHTML = '';
 
 //how does this amazon.js file know abt the products array from the products.js file? 
