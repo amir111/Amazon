@@ -4,8 +4,9 @@
 //creating an array, bc it represents a list. And we have a list of different products. 
 //We will use an object to represent each individual product (bc an obj lets us group multiple values(name,img,price) together)
 
-import {cart as myCart} from "../data/cart.js"
-//renames cart as myCart so that you can use the name variable cart again
+import {cart} from "../data/cart.js"
+//if you do {cart as myCart} instead of just {cart}, it renames cart as myCart so that you can use the variable name 'cart' again.
+import {products} from "../data/products.js"
 
 let accumulatedHTML = '';
 
