@@ -4,14 +4,14 @@
 //creating an array, bc it represents a list. And we have a list of different products. 
 //We will use an object to represent each individual product (bc an obj lets us group multiple values(name,img,price) together)
 
-import {cart, addToCart} from "../data/cart.js"
+import { cart, addToCart } from "../data/cart.js"
 //if you do {cart as myCart} instead of just {cart}, it renames cart as myCart so that you can use the variable name 'cart' again.
-import {products} from "../data/products.js"
+import { listOfProducts } from "../data/products.js"
 
 let accumulatedHTML = '';
 
 //how does this amazon.js file know abt the products array from the products.js file? 
-products.forEach(e => {
+listOfProducts.forEach(e => {
   accumulatedHTML += `<div class="product-container">
       <div class="product-image-container">
         <img class="product-image"
@@ -75,30 +75,31 @@ console.log(accumulatedHTML);
 document.querySelector('.js-grid-of-prdts').innerHTML = accumulatedHTML;
 
 function updateCartQt() {
-    //just added this to display total amount of stuff in the cart
-    let totalItemsInCart = 0;
-    let qt;
-    cart.forEach(item => {
-      qt = item.quantity;
-      totalItemsInCart += qt;
-    })
+  //display total amount of stuff in the cart
+  let totalItemsInCart = 0;
+  let qt;
+  cart.forEach(item => {
+    qt = item.quantity;
+    totalItemsInCart += qt;
+  })
 
-    console.log(cart)
-    console.log("Total quantity of stuff in cart: " + totalItemsInCart)
+  console.log(cart)
+  console.log("Total quantity of stuff in cart: " + totalItemsInCart)
 
-    document.querySelector(".js-cart-qty").innerHTML = totalItemsInCart;
+  document.querySelector(".js-cart-qty").innerHTML = totalItemsInCart;
+  // productName: prodName, ??? Why did I add this? accidental typo?
 }
 
 document.querySelectorAll('.js-add-to-cart-btn')
   .forEach((eBtn) => {
     eBtn.addEventListener('click', () => {
-    //console.log(eBtn.dataset.atrbName) if we clicked the basketball "add to cart" button, this console log will show "Intermediate Size Basketball"
-    //.dataset property gives us all the data attributes attached to this btn elt
-    //.atrb-name in kebab-style is converted to atrbName camelCase style so we use that converted style. And actually, if it was ".atrb-Name", it would be converted to camelCase "atrbname".
-    let prodID = eBtn.dataset.atrbId;
-    let prodName = eBtn.dataset.atrbName;
+      //console.log(eBtn.dataset.atrbName) if we clicked the basketball "add to cart" button, this console log will show "Intermediate Size Basketball"
+      //.dataset property gives us all the data attributes attached to this btn elt
+      //.atrb-name in kebab-style is converted to atrbName camelCase style so we use that converted style. And actually, if it was ".atrb-Name", it would be converted to camelCase "atrbname".
+      let prodID = eBtn.dataset.atrbId;
+      let prodName = eBtn.dataset.atrbName;
 
-    addToCart(prodID, prodName)
-    updateCartQt()
+      addToCart(prodID, prodName)
+      updateCartQt()
+    })
   })
-})
