@@ -6,8 +6,8 @@
 
 import { cart, addToCart } from "../data/cart.js"
 //if you do {cart as myCart} instead of just {cart}, it renames cart as myCart so that you can use the variable name 'cart' again.
-import { listOfProducts } from "../data/products.js"
-import { convertToCashFormat } from "./utils/money.js";
+import { listOfProducts } from "../data/listOfProducts.js"
+import { convertToCashFormat } from "./utils/strToCashFormat.js";
 
 let accumulatedHTML = '';
 
