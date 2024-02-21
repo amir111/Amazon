@@ -8,6 +8,7 @@
 
 import { cart } from "../data/cart.js"
 import { listOfProducts } from "../data/products.js"
+import { convertToCashFormat } from "./utils/money.js"
 
 let cartSummary = '';
 
@@ -35,7 +36,7 @@ cart.forEach((cartItem) => {
           ${matchedProd.name}
           </div>
           <div class="product-price">
-          $${(matchedProd.priceCents / 100).toFixed(2)}
+          $${convertToCashFormat(matchedProd.priceCents)}
           </div>
           <div class="product-quantity">
             <span>

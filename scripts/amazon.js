@@ -7,6 +7,7 @@
 import { cart, addToCart } from "../data/cart.js"
 //if you do {cart as myCart} instead of just {cart}, it renames cart as myCart so that you can use the variable name 'cart' again.
 import { listOfProducts } from "../data/products.js"
+import { convertToCashFormat } from "./utils/money.js";
 
 let accumulatedHTML = '';
 
@@ -31,7 +32,7 @@ listOfProducts.forEach(e => {
       </div>
 
       <div class="product-price">
-        $${(e.priceCents / 100).toFixed(2)}
+        $${convertToCashFormat(e.priceCents)}
       </div>
 
       <div class="product-quantity-container">
