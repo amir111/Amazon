@@ -1,5 +1,5 @@
 //saving the data
-export const cart = [{
+export let cart = [{
   id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
   quantity: 2
 }, {
@@ -28,4 +28,16 @@ export function addToCart(prodID, prodName) {
       quantity: 1
     })
   }
+}
+
+export function rmItemFromCartArr(theItemID) {
+  let newCartArr = []; //needed to create a whole new fresh cart array, but w/o the unwanted cart item
+
+  cart.forEach((item) => {
+    if (item.id !== theItemID) {
+      newCartArr.push(item)
+    }
+  })
+
+  cart = newCartArr; //update cart with new arr order
 }

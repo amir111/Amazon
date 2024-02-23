@@ -9,6 +9,7 @@
 import { cart } from "../data/cart.js"
 import { listOfProducts } from "../data/listOfProducts.js"
 import { convertToCashFormat } from "./utils/strToCashFormat.js"
+import { rmItemFromCartArr } from "../data/cart.js";
 
 let cartSummary = '';
 
@@ -22,7 +23,7 @@ cart.forEach((cartItem) => {
   })
 
   cartSummary +=
-    ` <div class="cart-item-container">
+    ` <div class="cart-item-container js-cart-item-container-${matchedProd.id}">
         <div class="delivery-date">
           Delivery date: Wednesday, June 15
         </div>
@@ -45,7 +46,7 @@ cart.forEach((cartItem) => {
             <span class="update-quantity-link link-primary">
               Update
             </span>
-            <span class="delete-quantity-link link-primary">
+            <span class="delete-quantity-link link-primary js-delete-btn" data-prdct-id='${matchedProd.id}'>
               Delete
             </span>
           </div>
@@ -99,5 +100,19 @@ cart.forEach((cartItem) => {
 });
 
 document.querySelector(".js-dom-order-summary").innerHTML = cartSummary
-
 // console.log(cartSummary);
+
+document.querySelectorAll('.js-delete-btn')
+  .forEach((delBtn) => {
+    delBtn.addEventListener('click', () => {
+      // console.log(delBtn.dataset.prdctId)
+      let id = delBtn.dataset.prdctId
+      rmItemFromCartArr(id);
+      // console.log(cart);
+
+      let yeetThisContainer = document.querySelector(`.js-cart-item-container-${id}`) 
+      // console.log(yeetThisContainer)
+      // delBtn.remove(yeetThisContainer) durys emes esek! :D
+      yeetThisContainer.remove(); //.remove() is a built in method to remove an HTML element 
+    })
+  })
