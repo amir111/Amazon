@@ -112,7 +112,7 @@ document.querySelectorAll('.js-delete-btn')
 
       let yeetThisContainer = document.querySelector(`.js-cart-item-container-${id}`) 
       // console.log(yeetThisContainer)
-      // delBtn.remove(yeetThisContainer) durys emes esek! :D
+      // delBtn.remove(yeetThisContainer) durys emes eshek! :D
       yeetThisContainer.remove(); //.remove() is a built in method to remove an HTML element 
     })
   })
