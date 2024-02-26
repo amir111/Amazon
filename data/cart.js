@@ -1,11 +1,23 @@
-//saving the data
-export let cart = [{
-  id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-  quantity: 2
-}, {
-  id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-  quantity: 1
-}];
+//Using localStorage to get/save cart state when changing page to page (i.e. from home page to checkout page and back again)
+export let cart = JSON.parse(localStorage.getItem('anyName'))
+
+//if cart does NOT exist, assign this arrOfObjs to cart
+if (!cart) {
+  cart = [{
+    id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+    quantity: 2
+  }, {
+    id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+    quantity: 1
+  }];
+}
+
+
+
+//creating localStorage.setItem('name', thingToSave) to save state of cart. Remember that localStorage only stores strings. So convert our object to a str via JSON.stringify(theArrOfObjs);
+function saveToStorage() {
+  localStorage.setItem('anyName', JSON.stringify(cart));
+}
 
 export function addToCart(prodID, prodName) {
   let repeatedItem = false;
@@ -28,6 +40,9 @@ export function addToCart(prodID, prodName) {
       quantity: 1
     })
   }
+
+  //cart was altered, so save state in localStorage
+  saveToStorage();
 }
 
 export function rmItemFromCartArr(theItemID) {
@@ -40,4 +55,7 @@ export function rmItemFromCartArr(theItemID) {
   })
 
   cart = newCartArr; //update cart with new arr order
+
+  //cart was altered, so save state in localStorage
+  saveToStorage();
 }
