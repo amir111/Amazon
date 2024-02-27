@@ -99,7 +99,7 @@ cart.forEach((cartItem) => {
   `;
 });
 
-document.querySelector(".js-dom-order-summary").innerHTML = cartSummary
+document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
 
 document.querySelectorAll('.js-delete-btn')
@@ -116,3 +116,11 @@ document.querySelectorAll('.js-delete-btn')
       yeetThisContainer.remove(); //.remove() is a built in method to remove an HTML element 
     })
   })
+
+// calculating total quantity of items in cart to display at top of checkout page
+let runningTotQt = 0;
+cart.forEach((item) => {
+  runningTotQt += item.quantity
+})
+document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = runningTotQt + ' items'
+// console.log('Tot items in cart: ' + runningTotQt);

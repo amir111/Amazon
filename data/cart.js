@@ -12,8 +12,6 @@ if (!cart) {
   }];
 }
 
-
-
 //creating localStorage.setItem('name', thingToSave) to save state of cart. Remember that localStorage only stores strings. So convert our object to a str via JSON.stringify(theArrOfObjs);
 function saveToStorage() {
   localStorage.setItem('anyName', JSON.stringify(cart));
