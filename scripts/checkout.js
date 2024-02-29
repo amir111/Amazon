@@ -11,8 +11,9 @@ import { listOfProducts } from "../data/listOfProducts.js"
 import { convertToCashFormat } from "./utils/strToCashFormat.js"
 import { rmItemFromCartArr } from "../data/cart.js";
 
-let cartSummary = '';
+//           //           //            GENERATING CART HTML SUMMARY            //           //           //            
 
+let cartSummary = '';
 cart.forEach((cartItem) => {
   let matchedProd;
 
@@ -102,6 +103,12 @@ cart.forEach((cartItem) => {
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
 
+//           //           //            RUN fnc AT START OF WEBPAGE LOAD            //           //           //  
+
+updateCartQuantityCheckoutPage();  
+
+//           //           //            CLICKING DELETE BUTTON            //           //           //    
+
 document.querySelectorAll('.js-delete-btn')
   .forEach((delBtn) => {
     delBtn.addEventListener('click', () => {
@@ -114,13 +121,21 @@ document.querySelectorAll('.js-delete-btn')
       // console.log(yeetThisContainer)
       // delBtn.remove(yeetThisContainer) durys emes eshek! :D
       yeetThisContainer.remove(); //.remove() is a built in method to remove an HTML element 
+
+      console.log("MANQA")
+      updateCartQuantityCheckoutPage()
     })
   })
 
-// calculating total quantity of items in cart to display at top of checkout page
-let runningTotQt = 0;
-cart.forEach((item) => {
-  runningTotQt += item.quantity
-})
-document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = runningTotQt + ' items'
-// console.log('Tot items in cart: ' + runningTotQt);
+//           //           //            CALC QT OF ITEMS IN CART AND DISPLAY            //           //           //    
+
+function updateCartQuantityCheckoutPage() {
+  console.log("RUNNING")
+  // calculating total quantity of items in cart to display at top of checkout page
+  let runningTotQt = 0;
+  cart.forEach((item) => {
+    runningTotQt += item.quantity
+  })
+  document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = runningTotQt + ' items'
+  // console.log('Tot items in cart: ' + runningTotQt);
+}
