@@ -57,3 +57,11 @@ export function rmItemFromCartArr(theItemID) {
   //cart was altered, so save state in localStorage
   saveToStorage();
 }
+
+export function calcCartQt() {
+  let runningTotQt = 0;
+  cart.forEach((item) => {
+    runningTotQt += item.quantity
+  })
+  return runningTotQt;
+}

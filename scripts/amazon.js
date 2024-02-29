@@ -4,14 +4,14 @@
 //creating an array, bc it represents a list. And we have a list of different products. 
 //We will use an object to represent each individual product (bc an obj lets us group multiple values(name,img,price) together)
 
-import { cart, addToCart } from "../data/cart.js"
+import { cart, addToCart, calcCartQt } from "../data/cart.js"
 //if you do {cart as myCart} instead of just {cart}, it renames cart as myCart so that you can use the variable name 'cart' again.
 import { listOfProducts } from "../data/listOfProducts.js"
 import { convertToCashFormat } from "./utils/strToCashFormat.js";
 
 let accumulatedHTML = '';
 
-//how does this amazon.js file know abt the products array from the products.js file? 
+//how does this amazon.js file know abt the products array from the products.js file? bc we imported it via modules
 listOfProducts.forEach(e => {
   accumulatedHTML += `<div class="product-container">
       <div class="product-image-container">
@@ -75,22 +75,12 @@ console.log(accumulatedHTML);
 
 document.querySelector('.js-grid-of-prdts').innerHTML = accumulatedHTML;
 
+//run fnc upon page load
 updateCartQt()
 
 function updateCartQt() {
-  //display total amount of stuff in the cart
-  let totalItemsInCart = 0;
-  let qt;
-  cart.forEach(item => {
-    qt = item.quantity;
-    totalItemsInCart += qt;
-  })
-
-  console.log(cart)
-  console.log("Total quantity of stuff in cart: " + totalItemsInCart)
-
-  document.querySelector(".js-cart-qty").innerHTML = totalItemsInCart;
-  // productName: prodName, ??? Why did I add this? accidental typo?
+  let qt = calcCartQt()
+  document.querySelector(".js-cart-qty").innerHTML = qt;
 }
 
 document.querySelectorAll('.js-add-to-cart-btn')

@@ -6,10 +6,9 @@
 // The cart.forEach(item) will loop through every item in the cart 
 // The products.forEach() will loop through products and find a matching id with the item in cart (item.id)...if (product.id === item.id) { this is our product/item}
 
-import { cart } from "../data/cart.js"
+import { cart, rmItemFromCartArr, calcCartQt } from "../data/cart.js"
 import { listOfProducts } from "../data/listOfProducts.js"
 import { convertToCashFormat } from "./utils/strToCashFormat.js"
-import { rmItemFromCartArr } from "../data/cart.js";
 
 //           //           //            GENERATING CART HTML SUMMARY            //           //           //            
 
@@ -103,10 +102,6 @@ cart.forEach((cartItem) => {
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
 
-//           //           //            RUN fnc AT START OF WEBPAGE LOAD            //           //           //  
-
-updateCartQuantityCheckoutPage();  
-
 //           //           //            CLICKING DELETE BUTTON            //           //           //    
 
 document.querySelectorAll('.js-delete-btn')
@@ -117,7 +112,7 @@ document.querySelectorAll('.js-delete-btn')
       rmItemFromCartArr(id);
       // console.log(cart);
 
-      let yeetThisContainer = document.querySelector(`.js-cart-item-container-${id}`) 
+      let yeetThisContainer = document.querySelector(`.js-cart-item-container-${id}`)
       // console.log(yeetThisContainer)
       // delBtn.remove(yeetThisContainer) durys emes eshek! :D
       yeetThisContainer.remove(); //.remove() is a built in method to remove an HTML element 
@@ -128,14 +123,11 @@ document.querySelectorAll('.js-delete-btn')
   })
 
 //           //           //            CALC QT OF ITEMS IN CART AND DISPLAY            //           //           //    
-
 function updateCartQuantityCheckoutPage() {
-  console.log("RUNNING")
-  // calculating total quantity of items in cart to display at top of checkout page
-  let runningTotQt = 0;
-  cart.forEach((item) => {
-    runningTotQt += item.quantity
-  })
-  document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = runningTotQt + ' items'
-  // console.log('Tot items in cart: ' + runningTotQt);
+  let qt = calcCartQt();
+  document.querySelector('.js-checkout-header-return-home-link-displayQt')
+    .innerHTML = qt + ' items'
 }
+
+//           //           //            RUN fnc AT START OF WEBPAGE LOAD            //           //           //  
+updateCartQuantityCheckoutPage();
