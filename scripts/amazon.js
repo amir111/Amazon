@@ -75,6 +75,8 @@ console.log(accumulatedHTML);
 
 document.querySelector('.js-grid-of-prdts').innerHTML = accumulatedHTML;
 
+updateCartQt()
+
 function updateCartQt() {
   //display total amount of stuff in the cart
   let totalItemsInCart = 0;
