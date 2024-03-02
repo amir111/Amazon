@@ -43,9 +43,11 @@ cart.forEach((cartItem) => {
             <span>
               Quantity: <span class="quantity-label">${cartItem.quantity}</span>
             </span>
-            <span class="update-quantity-link link-primary">
+            <span class="update-quantity-link link-primary js-upd-btn" data-prdct-id='${matchedProd.id}'>
               Update
             </span>
+            <input class="quantity-input">
+            <span class="save-qt link-primary">Save</span>
             <span class="delete-quantity-link link-primary js-delete-btn" data-prdct-id='${matchedProd.id}'>
               Delete
             </span>
@@ -102,17 +104,30 @@ cart.forEach((cartItem) => {
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
 
-//           //           //            CLICKING DELETE BUTTON            //           //           //    
+//           //           //            CLICK UPDATE BUTTON           //           //           //    
+document.querySelectorAll('.js-upd-btn').forEach((updBtn) => {
+  updBtn.addEventListener('click', () => {
+    let id = updBtn.dataset.prdctId;
+    console.log(id);
 
+    //grab the update parent container
+    let ctainer = document.querySelector(`.js-cart-item-container-${id}`);
+    //add another class name ("is-editing-qt") to the '.js-cart-item-container' container above. This way we can show a custom css style when upd is clicked on
+    ctainer.classList.add('is-editing-qt')
+  })
+})
+
+
+//           //           //            CLICK DELETE BUTTON           //           //           //   
 document.querySelectorAll('.js-delete-btn')
   .forEach((delBtn) => {
     delBtn.addEventListener('click', () => {
       // console.log(delBtn.dataset.prdctId)
       let id = delBtn.dataset.prdctId
-      rmItemFromCartArr(id);
+      rmItemFromCartArr(id); //this one actually removes the item from cart array
       // console.log(cart);
 
-      let yeetThisContainer = document.querySelector(`.js-cart-item-container-${id}`)
+      let yeetThisContainer = document.querySelector(`.js-cart-item-container-${id}`) //while this removes the html displaying this item on checkout.hmtl page
       // console.log(yeetThisContainer)
       // delBtn.remove(yeetThisContainer) durys emes eshek! :D
       yeetThisContainer.remove(); //.remove() is a built in method to remove an HTML element 

@@ -14,6 +14,44 @@
   margin-right: auto;
 }
 
+/* ozim mynany qostym. On start, be invisible */
+.quantity-input {
+  width: 30px;
+  display: none;
+}
+
+/* ozim mynany qostym. On start, be invisible */
+.save-qt {
+  display: none;
+}
+
+/* ozim mynany qostym 
+For all style elements .quantity-input's inside of .is-editing-qt, use display: initial to reset the display property. 
+This makes <input> appear upon editing qt.
+*/
+.is-editing-qt .quantity-input {
+ display: initial;
+}
+/* ozim mynany qostym 
+If class .is-editing-qt exists, it means we have to display the .save-qt (by making [display: initial] instead of [display: none])
+*/
+.is-editing-qt .save-qt {
+  display: initial;
+ }
+
+ /* ozim mynany qostym  
+ make update text disappear after clicking update*/
+ .is-editing-qt .js-upd-btn {
+  display: none;
+ }
+
+ /* ozim mynany qostym  
+ make actual number value of qt disapper clicking update*/
+ .is-editing-qt .quantity-label {
+  display: none;
+ }
+
+
 .page-title {
   font-weight: 700;
   font-size: 22px;
