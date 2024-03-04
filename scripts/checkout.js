@@ -47,7 +47,7 @@ cart.forEach((cartItem) => {
               Update
             </span>
             <input class="quantity-input">
-            <span class="save-qt link-primary">Save</span>
+            <span class="save-qt link-primary js-save-btn" data-prdct-id='${matchedProd.id}'>Save</span>
             <span class="delete-quantity-link link-primary js-delete-btn" data-prdct-id='${matchedProd.id}'>
               Delete
             </span>
@@ -103,6 +103,25 @@ cart.forEach((cartItem) => {
 
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
+
+
+//           //           //            CLICK SAVE BUTTON           //           //           //    
+//doing opposite of update, grab id of specific product (via HTMLelement.dataset.nameCamelCase), then grab save btn element, add eventListener to each save btn, on click: grab the ([id-specific] parent container "js-cart-item-container") and remove the class name "is-editing-quantity" from it. This should reverse all the css styling that was applied when clicking update to edit the quantity of items for a specific product
+document.querySelectorAll('.js-save-btn').forEach((saveBtn) => {
+  saveBtn.addEventListener('click', () => {
+    
+    //0. Actually go up to the html generation area, put data-prdct-id = 'DOLLARSIGN{matchedProd.id}' near class names for save html element
+    //1. get id, we will need it to know which specific product we clicked on
+    let id = saveBtn.dataset.prdctId; 
+
+    //2. Grab parent container
+    let crtContainer = document.querySelector(`.js-cart-item-container-${id}`);
+    //3. Remove class name "is-editing-quantity" from that specific container
+    crtContainer.classList.remove('is-editing-qt');
+  })
+})
+
+
 
 //           //           //            CLICK UPDATE BUTTON           //           //           //    
 document.querySelectorAll('.js-upd-btn').forEach((updBtn) => {
