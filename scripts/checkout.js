@@ -6,7 +6,7 @@
 // The cart.forEach(item) will loop through every item in the cart 
 // The products.forEach() will loop through products and find a matching id with the item in cart (item.id)...if (product.id === item.id) { this is our product/item}
 
-import { cart, rmItemFromCartArr, calcCartQt } from "../data/cart.js"
+import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving } from "../data/cart.js"
 import { listOfProducts } from "../data/listOfProducts.js"
 import { convertToCashFormat } from "./utils/strToCashFormat.js"
 
@@ -41,12 +41,12 @@ cart.forEach((cartItem) => {
           </div>
           <div class="product-quantity">
             <span>
-              Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+              Quantity: <span class="quantity-label js-qt-display-area-${matchedProd.id}">${cartItem.quantity}</span>
             </span>
             <span class="update-quantity-link link-primary js-upd-btn" data-prdct-id='${matchedProd.id}'>
               Update
             </span>
-            <input class="quantity-input">
+            <input class="quantity-input js-input-${matchedProd.id}">
             <span class="save-qt link-primary js-save-btn" data-prdct-id='${matchedProd.id}'>Save</span>
             <span class="delete-quantity-link link-primary js-delete-btn" data-prdct-id='${matchedProd.id}'>
               Delete
@@ -118,9 +118,36 @@ document.querySelectorAll('.js-save-btn').forEach((saveBtn) => {
     let crtContainer = document.querySelector(`.js-cart-item-container-${id}`);
     //3. Remove class name "is-editing-quantity" from that specific container
     crtContainer.classList.remove('is-editing-qt');
+
+    //         //        GRAB USER's INPUT FOR NEW QT AMOUNT + CHANGE HTML PAGE APPEARANCE        //        //   
+    let qnt;
+    function getValueFromUserInput() {
+      //1. Created a new class manually in the html generation section (A seperate second name (specifically for js) so as to not screw up the css linked to first class name). One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
+      //2. Grab value from user input using HTMLElement.value; 
+      let val = document.querySelector(`.js-input-${id}`).value; 
+      alert(val);
+      return val;
+    }
+    qnt = getValueFromUserInput()
+    qnt;
+    //console.log(typeof(qnt)) //string 
+    //3. qnt is currently in string value format bc input accepts user value as string. So change qnt into a Number by using Number(qnt)
+    let quant = Number(qnt);
+    //console.log(typeof(quant)) //number 
+
+    //4. Create a new class in the html geneartion (label area - where the qt is shown). Again, this is so as to not screw up the css styling linked to first name. One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
+    //5. Change the HTML appearance on the page for the qt
+    document.querySelector(`.js-qt-display-area-${id}`).innerHTML = quant;
+
+
+    //         //        UPD CART WITH NEW QT        //        // 
+    //1. Pass on id and new qt to a function that we created in cart.js but then imported into this checkout.js file
+    updQtAfterSaving(id, quant);
+
+    //         //        UPD HTML PAGE APPEARANCE AT TOP OF PAGE (TOT AMOUNT OF PRODS IN CART)      //        // 
+    updateCartQuantityCheckoutPage() //gonna need later
   })
 })
-
 
 
 //           //           //            CLICK UPDATE BUTTON           //           //           //    

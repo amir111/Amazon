@@ -65,3 +65,20 @@ export function calcCartQt() {
   })
   return runningTotQt;
 }
+
+export function updQtAfterSaving(prodID, newQt) { //0. Export the function from cart.js and import it into the checkout.html file
+  //1. Recieve product ID and the new quantity
+
+  //2. Find our product according to id using a cart.forEach(()=>{ if(id === id){}}) method
+  let matchedProduct;
+  cart.forEach(cartItem => {
+    if (cartItem.id === prodID){
+      matchedProduct = cartItem;
+    }
+  })
+  //3. Now that we have found our matched product. Upd it's qt to the newQt.
+  matchedProduct.quantity = newQt;
+
+  //4. And don't forget to save all this into local memory
+  saveToStorage();
+}
