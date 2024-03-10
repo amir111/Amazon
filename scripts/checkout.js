@@ -45,7 +45,7 @@ cart.forEach((cartItem) => {
             <span class="update-quantity-link link-primary js-upd-btn" data-prdct-id='${matchedProd.id}'>
               Update
             </span>
-            <input class="quantity-input js-input-${matchedProd.id}">
+            <input class="quantity-input js-input-${matchedProd.id}" data-prdct-id='${matchedProd.id}'>
             <span class="save-qt link-primary js-save-btn" data-prdct-id='${matchedProd.id}'>Save</span>
             <span class="delete-quantity-link link-primary js-delete-btn" data-prdct-id='${matchedProd.id}'>
               Delete
@@ -108,13 +108,54 @@ document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 document.querySelectorAll(`.quantity-input`).forEach((inputBox) => {
   inputBox.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      console.log('hit')
+      // console.log('hit')
       //trigger save
+      let id = inputBox.dataset.prdctId
+      //2. Grab parent container
+      let crtContainer = document.querySelector(`.js-cart-item-container-${id}`);
+      //3. Remove class name "is-editing-quantity" from that specific container. W/o this step, we would be stuck with old css styles. 
+      crtContainer.classList.remove('is-editing-qt');
+
+      //         //        GRAB USER's INPUT FOR NEW QT AMOUNT + CHANGE HTML PAGE APPEARANCE        //        //   
+    let qnt;
+    function getValueFromUserInput() {
+      //1) Created a new class manually in the html generation section (A seperate second name (specifically for js) so as to not screw up the css linked to first class name). One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
+      //2) Grab value from user input using HTMLElement.value; 
+      let val = document.querySelector(`.js-input-${id}`).value;
+      // alert(val);
+
+      // 2.5)               INPUT VALIDATION: type: a number 1-1000        //        // 
+      let previousVal = document.querySelector(`.js-qt-display-area-${id}`).innerHTML;
+      let x = val
+      if (isNaN(x) || x < 0 || x > 999) {
+        alert("Input not valid. Please note that the new quantity must be a numeric value within the range of 0-999.");
+        return previousVal;
+      } else {
+        // alert("Input OK");
+        return x;
+      }
+    };
+
+    qnt = getValueFromUserInput()
+    qnt;
+    console.log(typeof (qnt)) //string 
+    //3) qnt is currently in string value format bc input accepts user value as string. So change qnt into a Number by using Number(qnt)
+    let quant = Number(qnt);
+    //console.log(typeof(quant)) //number 
+
+    //4) Create a new class in the html geneartion (label area - where the qt is shown). Again, this is so as to not screw up the css styling linked to first name. One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
+    //5) Change the HTML appearance on the page for the qt
+    document.querySelector(`.js-qt-display-area-${id}`).innerHTML = quant;
+
+    //         //        UPD CART WITH NEW QT        //        // 
+    //1. Pass on id and new qt to a function that we created in cart.js but then imported into this checkout.js file
+    updQtAfterSaving(id, quant);
+
+    //         //        UPD HTML PAGE APPEARANCE AT TOP OF PAGE (TOT AMOUNT OF PRODS IN CART)      //        // 
+    updateCartQuantityCheckoutPage() //gonna need later
     }
   })
 })
-
-
 
 //           //           //            SAVE BUTTON CLICKED           //           //           //    
 //doing opposite of update, grab id of specific product (via HTMLelement.dataset.nameCamelCase), then grab save btn element, add eventListener to each save btn, on click: grab the ([id-specific] parent container "js-cart-item-container") and remove the class name "is-editing-quantity" from it. This should reverse all the css styling that was applied when clicking update to edit the quantity of items for a specific product
