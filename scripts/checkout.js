@@ -103,6 +103,17 @@ cart.forEach((cartItem) => {
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
 
+// Calling a fnc from an external lib provided by simon 
+hello();
+
+//Calling another fnc, but this time, from a completley different 2nd ext lib
+//Actually we are console.log()-ing the result of the fnc dayjs().
+console.log(dayjs());
+
+let rn = dayjs(); 
+let sevDayDelivery = rn.add(7, 'day'); 
+console.log("Delivery by date: ");
+console.log(sevDayDelivery.format('dddd: MMMM DD'));
 
 //           //           //            PRESSING ENTER AFTER PRESSING UPDATE          //           //           //    
 document.querySelectorAll(`.quantity-input`).forEach((inputBox) => {
