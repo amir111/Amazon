@@ -6,9 +6,26 @@
 // The cart.forEach(item) will loop through every item in the cart 
 // The products.forEach() will loop through products and find a matching id with the item in cart (item.id)...if (product.id === item.id) { this is our product/item}
 
-import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving } from "../data/cart.js"
-import { listOfProducts } from "../data/listOfProducts.js"
-import { convertToCashFormat } from "./utils/strToCashFormat.js"
+
+//        //       NORMAL/"NAMED" EXPORTS 
+import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving } from "../data/cart.js";
+import { listOfProducts } from "../data/listOfProducts.js";
+
+import convertToCashFormat from "./utils/strToCashFormat.js";
+
+// Importing ext lib via import inside the checkout.js file
+// (Instead of using script tags in the checkout.html file)
+// B/c this ext library has something called an ESM VERSION (which allows you to use JS MODULES)...look below line 28 to find comment abt ESM Versions.
+import {hello} from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
+
+//        //       DEFAULT EXPORT 
+//we don't have the {} here, b/c this syntax (w/o {}) is called a "default import". We use it when we only want to import one thing from a file. 
+//also, it doesn't work if you have the {} braces around 'dayjs'
+import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+//Above: So, again the dayjs library ONLY exports ONE THING, so they chose to use a 'default export' instead of a normal export. 
+//You can choose whatever type of export you want. But you must know both types. B/c when using external libs, some libs use a "normal (aka named) exports", and others will have a "default export". 
+//IF an external lib doesn't have an esm version, then just use <script> tags
+// ESM VERSION ALLOWS YOU TO USE JS MODULES and import directly into .js file (instead of using <script> tags in the .html file that is required in libs that do not have esm versions.)
 
 //           //           //            GENERATING CART HTML SUMMARY            //           //           //            
 let cartSummary = '';
@@ -102,18 +119,6 @@ cart.forEach((cartItem) => {
 
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
-
-// Calling a fnc from an external lib provided by simon 
-hello();
-
-//Calling another fnc, but this time, from a completley different 2nd ext lib
-//Actually we are console.log()-ing the result of the fnc dayjs().
-console.log(dayjs());
-
-let rn = dayjs(); 
-let sevDayDelivery = rn.add(7, 'day'); 
-console.log("Delivery by date: ");
-console.log(sevDayDelivery.format('dddd: MMMM DD'));
 
 //           //           //            PRESSING ENTER AFTER PRESSING UPDATE          //           //           //    
 document.querySelectorAll(`.quantity-input`).forEach((inputBox) => {
@@ -263,3 +268,18 @@ function updateCartQuantityCheckoutPage() {
 
 //           //           //            RUN fnc AT START OF WEBPAGE LOAD            //           //           //  
 updateCartQuantityCheckoutPage();
+
+//           //           //            Put the external lib fnc down here, bc...             //           //           // 
+//..., when i previously had it before the html generation, at the top of the web page, the 'Checkout ()' had no number in it. When it should, by default, have 'Checkout (3 items)' at the top of the web page.
+
+// Calling a fnc from an external lib provided by simon 
+hello();
+
+//Calling another fnc, but this time, from a completley different 2nd ext lib
+//Actually we are console.log()-ing the result of the fnc dayjs().
+console.log(dayjs());
+
+let rn = dayjs(); 
+let sevDayDelivery = rn.add(7, 'day'); 
+console.log("Delivery by date: ");
+console.log(sevDayDelivery.format('dddd: MMMM DD'));
