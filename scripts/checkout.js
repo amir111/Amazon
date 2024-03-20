@@ -279,7 +279,7 @@ hello();
 //Actually we are console.log()-ing the result of the fnc dayjs().
 console.log(dayjs());
 
-let rn = dayjs(); 
-let sevDayDelivery = rn.add(7, 'day'); 
+let rn = dayjs(); //today's date
+let zhetiDayDelivery = rn.add(7, 'day'); //Using a built-in fnc of dayjs lib, called .add(number, 'timetype') to determine delivery date 7 days from rn
 console.log("Delivery by date: ");
-console.log(sevDayDelivery.format('dddd: MMMM DD'));
+console.log("Delivery by date: " + zhetiDayDelivery.format('dddd: MMMM DD'));

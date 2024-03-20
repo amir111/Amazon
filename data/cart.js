@@ -1,23 +1,29 @@
 //Using localStorage to get/save cart state when changing page to page (i.e. from home page to checkout page and back again)
 export let cart = JSON.parse(localStorage.getItem('anyName'))
 
-//if cart does NOT exist, assign this arrOfObjs to cart
+//            //            //            DEFAULT CREATION OF CART            //            //            //
+
+//if cart does NOT exist, make a default list of items, by assigning this arrOfObjs to cart
 if (!cart) {
   cart = [{
     id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity: 2, 
-    deliveryOptionID: '1'
+    deliveryOptionId: '1'
   }, {
     id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
     quantity: 1, 
-    deliveryOptionID: ''
+    deliveryOptionId: '1'
   }];
 }
+
+//            //            //            SAVING TO LOCALSTORAGE           //            //            //
 
 //creating localStorage.setItem('name', thingToSave) to save state of cart. Remember that localStorage only stores strings. So convert our object to a str via JSON.stringify(theArrOfObjs);
 function saveToStorage() {
   localStorage.setItem('anyName', JSON.stringify(cart));
 }
+
+//            //            //            ADDING AN ITEM TO CART            //            //            //
 
 export function addToCart(prodID, prodName) {
   let repeatedItem = false;
@@ -32,12 +38,13 @@ export function addToCart(prodID, prodName) {
   })
 
   if (repeatedItem) { //if repeatedItem exits, add +1 to the items qt
-    i.quantity++; //if we just use item.quantity++, it'll say item not defined
-  } else { //else create that item in the cart
+    i.quantity++; //note: if we type "item.quantity++", it'll say item not defined. B/c item is local to forEach but 'i' was declared outside of forEach, and since forEach already ran, 'i' currently contains item's value.
+  } else { //else create that item in the cart ...also added default delivery option deliveryOptionID: '1'
     cart.push({
       id: prodID,
       productName: prodName,
-      quantity: 1
+      quantity: 1, 
+      deliveryOptionId: '1'
     })
   }
 
@@ -45,20 +52,26 @@ export function addToCart(prodID, prodName) {
   saveToStorage();
 }
 
-export function rmItemFromCartArr(theItemID) {
-  let newCartArr = []; //needed to create a whole new fresh cart array, but w/o the unwanted cart item
+//            //            //            RM AN ITEM FROM CART            //            //            //
 
+export function rmItemFromCartArr(theItemID) {
+  let newCartArr = []; //1. needed to create a whole new fresh cart array, but w/o the unwanted cart item
+
+  //2. push everything onto the new cart that was prev created, except the unwanted cart item
   cart.forEach((item) => {
     if (item.id !== theItemID) {
       newCartArr.push(item)
     }
   })
 
-  cart = newCartArr; //update cart with new arr order
+  //3. update cart with new arr order
+  cart = newCartArr; 
 
-  //cart was altered, so save state in localStorage
+  //4. cart was altered, so save state in localStorage
   saveToStorage();
 }
+
+//            //            //            CALC TOT QT OF ALL ITEMS IN CART           //            //            //
 
 export function calcCartQt() {
   let runningTotQt = 0;
@@ -67,6 +80,8 @@ export function calcCartQt() {
   })
   return runningTotQt;
 }
+
+//            //            //            UPD NEW QT AFTER CLICKING/PRESSING ENTER ON SAVE            //            //            //
 
 export function updQtAfterSaving(prodID, newQt) { //0. Export the function from cart.js and import it into the checkout.html file
   //1. Recieve product ID and the new quantity
