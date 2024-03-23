@@ -22,6 +22,7 @@ import {hello} from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 //we don't have the {} here, b/c this syntax (w/o {}) is called a "default import". We use it when we only want to import one thing from a file. 
 //also, it doesn't work if you have the {} braces around 'dayjs'
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+import deliveryOptions from "../data/deliveryOptions.js";
 //Above: So, again the dayjs library ONLY exports ONE THING, so they chose to use a 'default export' instead of a normal export. 
 //You can choose whatever type of export you want. But you must know both types. B/c when using external libs, some libs use a "normal (aka named) exports", and others will have a "default export". 
 //IF an external lib doesn't have an esm version, then just use <script> tags
@@ -38,10 +39,23 @@ cart.forEach((cartItem) => {
     }
   })
 
+  let matchedChoice; 
+  //looping thru an array (aka list) to assign the chosen delivery option of days
+  //to a variable called matchedChoice 
+  deliveryOptions.forEach( listItem => {
+    if (listItem.id === cartItem.deliveryOptionId) {
+      matchedChoice = listItem;
+    }
+  });
+
+  let bugingiKun = dayjs(); //today's date
+  let kelediKun = bugingiKun.add(matchedChoice.deliveryDays, 'days');
+  let durysFormat = kelediKun.format('dddd, MMMM D');
+
   cartSummary +=
     ` <div class="cart-item-container js-cart-item-container-${matchedProd.id}">
         <div class="delivery-date">
-          Delivery date: Wednesday, June 15
+          Delivery date: ${durysFormat}
         </div>
 
       <div class="cart-item-details-grid">
@@ -74,48 +88,50 @@ cart.forEach((cartItem) => {
           <div class="delivery-options-title">
             Choose a delivery option:
           </div>
-
-          <div class="delivery-option">
-            <input type="radio" class="delivery-option-input"
-              name="delivery-option-${matchedProd.id}">
-            <div>
-              <div class="delivery-option-date">
-                Tuesday, June 21
-              </div>
-              <div class="delivery-option-price">
-                FREE Shipping
-              </div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input type="radio" checked class="delivery-option-input"
-              name="delivery-option-${matchedProd.id}">
-            <div>
-              <div class="delivery-option-date">
-                Wednesday, June 15
-              </div>
-              <div class="delivery-option-price">
-                $4.99 - Shipping
-              </div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input type="radio" class="delivery-option-input"
-              name="delivery-option-${matchedProd.id}">
-            <div>
-              <div class="delivery-option-date">
-                Monday, June 13
-              </div>
-              <div class="delivery-option-price">
-                $9.99 - Shipping
-              </div>
-            </div>
-          </div>
+          ${deliveryOptionsHTML(matchedProd, cartItem)}
         </div>
       </div>
     </div>
   `;
 });
+
+//           //           //            Create HTML for 3 delivery options  (price/day)           //           //           // 
+//for each delivery option, create some html
+function deliveryOptionsHTML(matchedProd, cartItem) {
+  let html = '';
+
+  deliveryOptions.forEach(obj => {
+
+    let rn = dayjs(); //today's date
+    let delivDate = rn.add(obj.deliveryDays, 'days');
+    let formattedDateStr = delivDate.format('dddd, MMMM D');
+
+    let priceString = obj.priceCents === 0 ? 'FREE' : `$${convertToCashFormat(obj.priceCents)}`;
+
+    let isChecked = obj.id === cartItem.deliveryOptionId ? true : false;
+
+    html += `
+      <div class="delivery-option">
+        <input type="radio" 
+          ${isChecked ? 'checked' : ''}
+          class="delivery-option-input"
+          name="delivery-option-${matchedProd.id}">
+        <div>
+          <div class="delivery-option-date">
+            ${formattedDateStr}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString} - Shipping
+          </div>
+        </div>
+      </div>
+    `
+  })
+  
+  return html;
+}
+
+
 
 document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
 // console.log(cartSummary);
@@ -273,13 +289,13 @@ updateCartQuantityCheckoutPage();
 //..., when i previously had it before the html generation, at the top of the web page, the 'Checkout ()' had no number in it. When it should, by default, have 'Checkout (3 items)' at the top of the web page.
 
 // Calling a fnc from an external lib provided by simon 
-hello();
+// hello(); // just displays 'hello' in console
 
 //Calling another fnc, but this time, from a completley different 2nd ext lib
 //Actually we are console.log()-ing the result of the fnc dayjs().
-console.log(dayjs());
+// console.log(dayjs());
 
-let rn = dayjs(); //today's date
-let zhetiDayDelivery = rn.add(7, 'day'); //Using a built-in fnc of dayjs lib, called .add(number, 'timetype') to determine delivery date 7 days from rn
-console.log("Delivery by date: ");
-console.log("Delivery by date: " + zhetiDayDelivery.format('dddd: MMMM DD'));
+// let rn = dayjs(); //today's date
+// let sevDay = rn.add(7, 'day'); //Using a built-in fnc of dayjs lib, called .add(number, 'timetype') to determine delivery date 7 days from rn
+// let sevDayFormatted = sevDay.format('dddd: MMMM DD') //format the sevDay into a custom look
+// console.log("Delivery by date: " + sevDayFormatted);
