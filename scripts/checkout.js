@@ -8,7 +8,7 @@
 
 
 //        //       NORMAL/"NAMED" EXPORTS 
-import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving } from "../data/cart.js";
+import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving, updDelivOption } from "../data/cart.js";
 import { listOfProducts } from "../data/listOfProducts.js";
 
 import convertToCashFormat from "./utils/strToCashFormat.js";
@@ -16,7 +16,7 @@ import convertToCashFormat from "./utils/strToCashFormat.js";
 // Importing ext lib via import inside the checkout.js file
 // (Instead of using script tags in the checkout.html file)
 // B/c this ext library has something called an ESM VERSION (which allows you to use JS MODULES)...look below line 28 to find comment abt ESM Versions.
-import {hello} from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
+import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 
 //        //       DEFAULT EXPORT 
 //we don't have the {} here, b/c this syntax (w/o {}) is called a "default import". We use it when we only want to import one thing from a file. 
@@ -39,18 +39,18 @@ cart.forEach((cartItem) => {
     }
   })
 
-  let matchedChoice; 
+  let matchedChoice;
   //looping thru an array (aka list) to assign the chosen delivery option of days
   //to a variable called matchedChoice 
-  deliveryOptions.forEach( listItem => {
+  deliveryOptions.forEach(listItem => {
     if (listItem.id === cartItem.deliveryOptionId) {
       matchedChoice = listItem;
     }
   });
 
   let bugingiKun = dayjs(); //today's date
-  let kelediKun = bugingiKun.add(matchedChoice.deliveryDays, 'days');
-  let durysFormat = kelediKun.format('dddd, MMMM D');
+  let dayOfArrival = bugingiKun.add(matchedChoice.deliveryDays, 'days');
+  let durysFormat = dayOfArrival.format('dddd, MMMM D');
 
   cartSummary +=
     ` <div class="cart-item-container js-cart-item-container-${matchedProd.id}">
@@ -101,17 +101,20 @@ function deliveryOptionsHTML(matchedProd, cartItem) {
   let html = '';
 
   deliveryOptions.forEach(obj => {
-
     let rn = dayjs(); //today's date
     let delivDate = rn.add(obj.deliveryDays, 'days');
     let formattedDateStr = delivDate.format('dddd, MMMM D');
 
     let priceString = obj.priceCents === 0 ? 'FREE' : `$${convertToCashFormat(obj.priceCents)}`;
 
+    //obj.id is the delivery id
     let isChecked = obj.id === cartItem.deliveryOptionId ? true : false;
 
+    //added data attributes so that we can grab specific details, like the product id and the delivery id that were selected and the bottom of page in a querySelectorAll that calls a function in cart.js
     html += `
-      <div class="delivery-option">
+      <div class="delivery-option js-deliv-opt"
+        data-product-id="${matchedProd.id}"
+        data-deliv-id="${obj.id}">
         <input type="radio" 
           ${isChecked ? 'checked' : ''}
           class="delivery-option-input"
@@ -127,7 +130,7 @@ function deliveryOptionsHTML(matchedProd, cartItem) {
       </div>
     `
   })
-  
+
   return html;
 }
 
@@ -149,42 +152,42 @@ document.querySelectorAll(`.quantity-input`).forEach((inputBox) => {
       crtContainer.classList.remove('is-editing-qt');
 
       //         //        GRAB USER's INPUT FOR NEW QT AMOUNT + CHANGE HTML PAGE APPEARANCE        //        //   
-    let qnt;
-    function getValueFromUserInput() {
-      //1) Created a new class manually in the html generation section (A seperate second name (specifically for js) so as to not screw up the css linked to first class name). One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
-      //2) Grab value from user input using HTMLElement.value; 
-      let val = document.querySelector(`.js-input-${id}`).value;
-      // alert(val);
+      let qnt;
+      function getValueFromUserInput() {
+        //1) Created a new class manually in the html generation section (A seperate second name (specifically for js) so as to not screw up the css linked to first class name). One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
+        //2) Grab value from user input using HTMLElement.value; 
+        let val = document.querySelector(`.js-input-${id}`).value;
+        // alert(val);
 
-      // 2.5)               INPUT VALIDATION: type: a number 1-1000        //        // 
-      let previousVal = document.querySelector(`.js-qt-display-area-${id}`).innerHTML;
-      let x = val
-      if (isNaN(x) || x < 0 || x > 999) {
-        alert("Input not valid. Please note that the new quantity must be a numeric value within the range of 0-999.");
-        return previousVal;
-      } else {
-        // alert("Input OK");
-        return x;
-      }
-    };
+        // 2.5)               INPUT VALIDATION: type: a number 1-1000        //        // 
+        let previousVal = document.querySelector(`.js-qt-display-area-${id}`).innerHTML;
+        let x = val
+        if (isNaN(x) || x < 0 || x > 999) {
+          alert("Input not valid. Please note that the new quantity must be a numeric value within the range of 0-999.");
+          return previousVal;
+        } else {
+          // alert("Input OK");
+          return x;
+        }
+      };
 
-    qnt = getValueFromUserInput()
-    qnt;
-    console.log(typeof (qnt)) //string 
-    //3) qnt is currently in string value format bc input accepts user value as string. So change qnt into a Number by using Number(qnt)
-    let quant = Number(qnt);
-    //console.log(typeof(quant)) //number 
+      qnt = getValueFromUserInput()
+      qnt;
+      console.log(typeof (qnt)) //string 
+      //3) qnt is currently in string value format bc input accepts user value as string. So change qnt into a Number by using Number(qnt)
+      let quant = Number(qnt);
+      //console.log(typeof(quant)) //number 
 
-    //4) Create a new class in the html geneartion (label area - where the qt is shown). Again, this is so as to not screw up the css styling linked to first name. One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
-    //5) Change the HTML appearance on the page for the qt
-    document.querySelector(`.js-qt-display-area-${id}`).innerHTML = quant;
+      //4) Create a new class in the html geneartion (label area - where the qt is shown). Again, this is so as to not screw up the css styling linked to first name. One of my mistakes was not creating this new unique class (unique b/c id is associated with it). 
+      //5) Change the HTML appearance on the page for the qt
+      document.querySelector(`.js-qt-display-area-${id}`).innerHTML = quant;
 
-    //         //        UPD CART WITH NEW QT        //        // 
-    //1. Pass on id and new qt to a function that we created in cart.js but then imported into this checkout.js file
-    updQtAfterSaving(id, quant);
+      //         //        UPD CART WITH NEW QT        //        // 
+      //1. Pass on id and new qt to a function that we created in cart.js but then imported into this checkout.js file
+      updQtAfterSaving(id, quant);
 
-    //         //        UPD HTML PAGE APPEARANCE AT TOP OF PAGE (TOT AMOUNT OF PRODS IN CART)      //        // 
-    updateCartQuantityCheckoutPage() //gonna need later
+      //         //        UPD HTML PAGE APPEARANCE AT TOP OF PAGE (TOT AMOUNT OF PRODS IN CART)      //        // 
+      updateCartQuantityCheckoutPage() //gonna need later
     }
   })
 })
@@ -299,3 +302,15 @@ updateCartQuantityCheckoutPage();
 // let sevDay = rn.add(7, 'day'); //Using a built-in fnc of dayjs lib, called .add(number, 'timetype') to determine delivery date 7 days from rn
 // let sevDayFormatted = sevDay.format('dddd: MMMM DD') //format the sevDay into a custom look
 // console.log("Delivery by date: " + sevDayFormatted);
+
+
+//           //           //            Event listener for changing the delivery day           //           //           //  
+document.querySelectorAll('.js-deliv-opt').forEach((radioBtn) => {
+  radioBtn.addEventListener('click', () => {
+    //1. Upd deliv option id in the cart 
+    //Then 2. Upd the page
+    let prodId = radioBtn.dataset.productId
+    let delivId = radioBtn.dataset.delivId
+    updDelivOption(prodId, delivId)
+  })
+});

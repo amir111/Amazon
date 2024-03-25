@@ -99,3 +99,25 @@ export function updQtAfterSaving(prodID, newQt) { //0. Export the function from 
   //4. And don't forget to save all this into local memory
   saveToStorage();
 }
+
+
+//            //            //            UPDATING THE DELIVERY OPTION (making deliv options on checkout.js page interactive)          //            //            //
+
+
+// To upd a delivery option, we need to know the 1. Product to update, and 2. Chosen delivery option 
+export function updDelivOption(prodId, delivId) {
+  let theCorrectCartItem; //declared outside of forEach so, that it can be used again
+
+  cart.forEach((cartItem) => {
+    if (prodId === cartItem.id) { //find theCorrectCartItem by going thru every cart item and comparing the passed in prodId id
+      theCorrectCartItem = cartItem;
+    }
+  });
+
+  //Look at the cart, and you will see that each cart item has a property called 'deliveryOptionId'
+  //Sooo, we want to just update/change that item's property with the delivId that was passed into this function
+  theCorrectCartItem.deliveryOptionId = delivId;
+  
+  //save to local stor (just saves cart as it currently is in local storage)
+  saveToStorage()
+}
