@@ -13,6 +13,6 @@ let deliveryOptions = [{
 }]
 
 // Ques: Why is id as a string and deliveryDays an integer? 
-// Ans: B/c id's can contain letters
+// Ans: B/c id's may contain letters
 
 export default deliveryOptions; 
