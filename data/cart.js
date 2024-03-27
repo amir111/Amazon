@@ -103,7 +103,6 @@ export function updQtAfterSaving(prodID, newQt) { //0. Export the function from 
 
 //            //            //            UPDATING THE DELIVERY OPTION (making deliv options on checkout.js page interactive)          //            //            //
 
-
 // To upd a delivery option, we need to know the 1. Product to update, and 2. Chosen delivery option 
 export function updDelivOption(prodId, delivId) {
   let theCorrectCartItem; //declared outside of forEach so, that it can be used again
