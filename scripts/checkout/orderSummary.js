@@ -6,7 +6,6 @@
 // The cart.forEach(item) will loop through every item in the cart 
 // The products.forEach() will loop through products and find a matching id with the item in cart (item.id)...if (product.id === item.id) { this is our product/item}
 
-
 //        //       NORMAL/"NAMED" EXPORTS 
 import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving, updDelivOption } from "../../data/cart.js";
 import { listOfProducts } from "../../data/listOfProducts.js";
@@ -23,6 +22,7 @@ import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 //also, it doesn't work if you have the {} braces around 'dayjs'
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import deliveryOptions from "../../data/deliveryOptions.js";
+import { renderBeforeTax, renderFinalTot, renderJustTax, renderTotShippingPrice } from "./paymentSummary.js";
 //Above: So, again the dayjs library ONLY exports ONE THING, so they chose to use a 'default export' instead of a normal export. 
 //You can choose whatever type of export you want. But you must know both types. B/c when using external libs, some libs use a "normal (aka named) exports", and others will have a "default export". 
 //IF an external lib doesn't have an esm version, then just use <script> tags
@@ -323,6 +323,18 @@ export function renderOrderSummary() {
 
       //now, refresh the page (i.e. upd the page)
       renderOrderSummary();
+
+      //now, refresh the page 
+      renderTotShippingPrice();
+
+      //now, refresh the page 
+      renderBeforeTax();
+
+      //now, refresh the page  
+      renderJustTax();
+
+      //now, refresh the page 
+      renderFinalTot();
     })
   });
 }
