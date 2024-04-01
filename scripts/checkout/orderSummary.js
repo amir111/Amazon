@@ -22,14 +22,14 @@ import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 //also, it doesn't work if you have the {} braces around 'dayjs'
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import deliveryOptions from "../../data/deliveryOptions.js";
-import { renderBeforeTax, renderFinalTot, renderJustTax, renderTotShippingPrice } from "./paymentSummary.js";
+import { renderBeforeTax, renderFinalTot, renderJustTax, renderPaymentSummary, renderTotShippingPrice, daHtml } from "./paymentSummary.js";
 //Above: So, again the dayjs library ONLY exports ONE THING, so they chose to use a 'default export' instead of a normal export. 
 //You can choose whatever type of export you want. But you must know both types. B/c when using external libs, some libs use a "normal (aka named) exports", and others will have a "default export". 
 //IF an external lib doesn't have an esm version, then just use <script> tags
 // ESM VERSION ALLOWS YOU TO USE JS MODULES and import directly into .js file (instead of using <script> tags in the .html file that is required in libs that do not have esm versions.)
 
 
-export function renderOrderSummary() { 
+export function renderOrderSummary() {
   //           //           //            GENERATING CART HTML SUMMARY            //           //           //            
   let cartSummary = '';
   cart.forEach((cartItem) => {
@@ -111,6 +111,7 @@ export function renderOrderSummary() {
       let priceString = deliveryOpt.priceCents === 0 ? 'FREE' : `$${convertToCashFormat(deliveryOpt.priceCents)}`;
 
       //obj.id is the delivery id
+      //if " deliveryOpt.id === cartItem.deliveryOptionId" is T, then make 'isChecked' equal to true, else make 'isChecked' equal to false.
       let isChecked = deliveryOpt.id === cartItem.deliveryOptionId ? true : false;
 
       //added data attributes so that we can grab specific details, like the product id and the delivery id that were selected and the bottom of page in a querySelectorAll that calls a function in cart.js
@@ -278,14 +279,22 @@ export function renderOrderSummary() {
 
         console.log("MANQA")
         updateCartQuantityCheckoutPage()
+
+        // daHtml(); //wasn't working earlier? but now does? Anyways, moved inside the updateCartQuantityCheckoutPage(), b/c that way all the event btns on the page will trigger the refresh of the page (delete btn, save btn, update btn, change of delivery option)
       })
     })
 
   //           //           //            CALC QT OF ITEMS IN CART AND DISPLAY            //           //           //    
   function updateCartQuantityCheckoutPage() {
+
+    //CALC QT OF ITEMS IN CART AND DISPLAY (L SIDE OF PAGE)
     let qt = calcCartQt();
     document.querySelector('.js-checkout-header-return-home-link-displayQt')
       .innerHTML = qt + ' items'
+
+    // added later on 
+    // REFRESHES ALL PRICE CALCS ON THE (R SIDE OF CHECKOUT PAGE)
+    daHtml();
   }
 
   //           //           //            RUN fnc AT START OF WEBPAGE LOAD            //           //           //  
@@ -322,19 +331,8 @@ export function renderOrderSummary() {
       updDelivOption(prodId, delivId)
 
       //now, refresh the page (i.e. upd the page)
-      renderOrderSummary();
-
-      //now, refresh the page 
-      renderTotShippingPrice();
-
-      //now, refresh the page 
-      renderBeforeTax();
-
-      //now, refresh the page  
-      renderJustTax();
-
-      //now, refresh the page 
-      renderFinalTot();
+      // updateCartQuantityCheckoutPage(); 
+      daHtml();
     })
   });
 }
