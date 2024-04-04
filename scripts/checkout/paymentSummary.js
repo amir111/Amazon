@@ -1,5 +1,5 @@
 import { listOfProducts } from "../../data/listOfProducts.js";
-import { cart } from "../../data/cart.js";
+import { cart, calcCartQt } from "../../data/cart.js";
 import convertToCashFormat from "../utils/strToCashFormat.js";
 
 export function renderPaymentSummary() {
@@ -86,7 +86,7 @@ export function daHtml() {
     </div>
 
     <div class="payment-summary-row">
-      <div>Items (3):</div>
+      <div>Items (${calcCartQt()}):</div>
       <div class="payment-summary-money">
         ${'$' + convertToCashFormat(renderPaymentSummary())}
       </div>

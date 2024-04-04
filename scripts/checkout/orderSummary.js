@@ -22,12 +22,11 @@ import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 //also, it doesn't work if you have the {} braces around 'dayjs'
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import deliveryOptions from "../../data/deliveryOptions.js";
-import { renderBeforeTax, renderFinalTot, renderJustTax, renderPaymentSummary, renderTotShippingPrice, daHtml } from "./paymentSummary.js";
+import { daHtml } from "./paymentSummary.js";
 //Above: So, again the dayjs library ONLY exports ONE THING, so they chose to use a 'default export' instead of a normal export. 
 //You can choose whatever type of export you want. But you must know both types. B/c when using external libs, some libs use a "normal (aka named) exports", and others will have a "default export". 
 //IF an external lib doesn't have an esm version, then just use <script> tags
 // ESM VERSION ALLOWS YOU TO USE JS MODULES and import directly into .js file (instead of using <script> tags in the .html file that is required in libs that do not have esm versions.)
-
 
 export function renderOrderSummary() {
   //           //           //            GENERATING CART HTML SUMMARY            //           //           //            
@@ -331,8 +330,9 @@ export function renderOrderSummary() {
       updDelivOption(prodId, delivId)
 
       //now, refresh the page (i.e. upd the page)
-      // updateCartQuantityCheckoutPage(); 
-      daHtml();
+      // updateCartQuantityCheckoutPage(); //you can also call daHtml() which will do the same
+      // daHtml();
+      renderOrderSummary(); //finally changed to renderOrderSummary func, instead of calling updateCartQuantityCheckoutPage() or daHtml(), b/c those fncs don't change the L side of screen on top each product where it displays interactively with each radio btn pressed - "Delivery Date: Date".
     })
   });
 }
