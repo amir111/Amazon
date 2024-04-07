@@ -9,7 +9,7 @@
 //        //       NORMAL/"NAMED" EXPORTS 
 import { cart, rmItemFromCartArr, calcCartQt, updQtAfterSaving, updDelivOption } from "../../data/cart.js";
 import { listOfProducts } from "../../data/listOfProducts.js";
-
+import { daHtml } from "./paymentSummary.js";
 import convertToCashFormat from "../utils/strToCashFormat.js";
 
 // Importing ext lib via import inside the checkout.js file
@@ -22,7 +22,7 @@ import { hello } from "https://unpkg.com/supersimpledev@1.0.1/hello.esm.js";
 //also, it doesn't work if you have the {} braces around 'dayjs'
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import deliveryOptions from "../../data/deliveryOptions.js";
-import { daHtml } from "./paymentSummary.js";
+
 //Above: So, again the dayjs library ONLY exports ONE THING, so they chose to use a 'default export' instead of a normal export. 
 //You can choose whatever type of export you want. But you must know both types. B/c when using external libs, some libs use a "normal (aka named) exports", and others will have a "default export". 
 //IF an external lib doesn't have an esm version, then just use <script> tags
@@ -95,6 +95,10 @@ export function renderOrderSummary() {
       </div>
     `;
   });
+  
+  //           //           //            RUN ONCE AT START OF WEBPAGE LOAD, DISPLAYS L Side Checkout Page            //           //           // 
+  document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
+  // console.log(cartSummary);
 
   //           //           //            Create HTML for 3 delivery options  (price/day)           //           //           // 
   //for each delivery option, create some html
@@ -136,11 +140,6 @@ export function renderOrderSummary() {
 
     return html;
   }
-
-
-
-  document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
-  // console.log(cartSummary);
 
   //           //           //            PRESSING ENTER AFTER PRESSING UPDATE          //           //           //    
   document.querySelectorAll(`.quantity-input`).forEach((inputBox) => {
@@ -230,6 +229,7 @@ export function renderOrderSummary() {
       qnt = getValueFromUserInput()
       qnt;
       console.log(typeof (qnt)) //string 
+
       //3) qnt is currently in string value format bc input accepts user value as string. So change qnt into a Number by using Number(qnt)
       let quant = Number(qnt);
       //console.log(typeof(quant)) //number 
@@ -256,7 +256,7 @@ export function renderOrderSummary() {
 
       //grab the update parent container
       let ctainer = document.querySelector(`.js-cart-item-container-${id}`);
-      //add another class name ("is-editing-qt") to the '.js-cart-item-container' container above. This way we can show a custom css style when upd is clicked on
+      //add another class name ("is-editing-qt") to the '.js-cart-item-container' container above. This way we can show a custom css style upon clicking update
       ctainer.classList.add('is-editing-qt')
     })
   })
@@ -283,9 +283,8 @@ export function renderOrderSummary() {
       })
     })
 
-  //           //           //            CALC QT OF ITEMS IN CART AND DISPLAY            //           //           //    
+  //           //           //            CALC QT OF ITEMS IN CART AND DISPLAY AT TOP PAGE          //           //           //    
   function updateCartQuantityCheckoutPage() {
-
     //CALC QT OF ITEMS IN CART AND DISPLAY (L SIDE OF PAGE)
     let qt = calcCartQt();
     document.querySelector('.js-checkout-header-return-home-link-displayQt')
@@ -299,40 +298,25 @@ export function renderOrderSummary() {
   //           //           //            RUN fnc AT START OF WEBPAGE LOAD            //           //           //  
   updateCartQuantityCheckoutPage();
 
-  //           //           //            Put the external lib fnc down here, bc...             //           //           // 
-  //..., when i previously had it before the html generation, at the top of the web page, the 'Checkout ()' had no number in it. When it should, by default, have 'Checkout (3 items)' at the top of the web page.
-
-  // Calling a fnc from an external lib provided by simon 
-  // hello(); // just displays 'hello' in console
-
-  //Calling another fnc, but this time, from a completley different 2nd ext lib
-  //Actually we are console.log()-ing the result of the fnc dayjs().
-  // console.log(dayjs());
-
-  // let rn = dayjs(); //today's date
-  // let sevDay = rn.add(7, 'day'); //Using a built-in fnc of dayjs lib, called .add(number, 'timetype') to determine delivery date 7 days from rn
-  // let sevDayFormatted = sevDay.format('dddd: MMMM DD') //format the sevDay into a custom look
-  // console.log("Delivery by date: " + sevDayFormatted);
-
-
   //           //           //            Event listener for changing the delivery day           //           //           //  
   document.querySelectorAll('.js-deliv-opt').forEach((radioBtn) => {
     radioBtn.addEventListener('click', () => {
       //1. Upd deliv option id in the cart 
       //Then 2. Upd the page
 
-      //hold the id of the product we're looking at in the checkout.html page
+      //hold the id of the product that was selected by user
       let prodId = radioBtn.dataset.productId
-      //hold the id that was selected by user
+      //hold the delivery id (choice 1,2or3) that was selected by user
       let delivId = radioBtn.dataset.delivId
 
       //upd the id of deliveryOptionId inside of cart
       updDelivOption(prodId, delivId)
 
-      //now, refresh the page (i.e. upd the page)
+      // Now, refresh the page (i.e. upd the page)
       // updateCartQuantityCheckoutPage(); //you can also call daHtml() which will do the same
       // daHtml();
-      renderOrderSummary(); //finally changed to renderOrderSummary func, instead of calling updateCartQuantityCheckoutPage() or daHtml(), b/c those fncs don't change the L side of screen on top each product where it displays interactively with each radio btn pressed - "Delivery Date: Date".
+      // Finally changed to renderOrderSummary func, instead of calling updateCartQuantityCheckoutPage() or daHtml(), b/c those fncs don't change the L side of screen on top each product where it displays interactively with each radio btn pressed - "Delivery Date: Date".
+      renderOrderSummary();  
     })
   });
 }
