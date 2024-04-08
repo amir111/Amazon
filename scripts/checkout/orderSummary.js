@@ -95,12 +95,12 @@ export function renderOrderSummary() {
       </div>
     `;
   });
-  
   //           //           //            RUN ONCE AT START OF WEBPAGE LOAD, DISPLAYS L Side Checkout Page            //           //           // 
   document.querySelector('.js-dom-order-summary').innerHTML = cartSummary
   // console.log(cartSummary);
 
-  //           //           //            Create HTML for 3 delivery options  (price/day)           //           //           // 
+
+  //           //           //            Create HTML 3 deliv optns For each Product in Cart           //           //           // 
   //for each delivery option, create some html
   function deliveryOptionsHTML(matchedProd, cartItem) {
     let html = '';
@@ -287,8 +287,7 @@ export function renderOrderSummary() {
   function updateCartQuantityCheckoutPage() {
     //CALC QT OF ITEMS IN CART AND DISPLAY (L SIDE OF PAGE)
     let qt = calcCartQt();
-    document.querySelector('.js-checkout-header-return-home-link-displayQt')
-      .innerHTML = qt + ' items'
+    document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = qt + ' items'
 
     // added later on 
     // REFRESHES ALL PRICE CALCS ON THE (R SIDE OF CHECKOUT PAGE)

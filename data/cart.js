@@ -1,8 +1,7 @@
 //Using localStorage to get/save cart state when changing page to page (i.e. from home page to checkout page and back again)
 export let cart = JSON.parse(localStorage.getItem('anyName'))
 
-//            //            //            DEFAULT CREATION OF CART            //            //            //
-
+//            //            DEFAULT CREATION OF CART            //            //
 //if cart does NOT exist, make a default list of items, by assigning this arrOfObjs to cart
 if (!cart) {
   cart = [{
@@ -16,15 +15,14 @@ if (!cart) {
   }];
 }
 
-//            //            //            SAVING TO LOCALSTORAGE           //            //            //
+//            //            SAVING TO LOCALSTORAGE           //            //
 
 //creating localStorage.setItem('name', thingToSave) to save state of cart. Remember that localStorage only stores strings. So convert our object to a str via JSON.stringify(theArrOfObjs);
 function saveToStorage() {
   localStorage.setItem('anyName', JSON.stringify(cart));
 }
 
-//            //            //            ADDING AN ITEM TO CART            //            //            //
-
+//            //            ADDING AN ITEM TO CART            //            //
 export function addToCart(prodID, prodName) {
   let repeatedItem = false;
   let i; //declared outside of forEach so, that it can be used again
@@ -52,8 +50,7 @@ export function addToCart(prodID, prodName) {
   saveToStorage();
 }
 
-//            //            //            RM AN ITEM FROM CART            //            //            //
-
+//            //            RM AN ITEM FROM CART            //            //
 export function rmItemFromCartArr(theItemID) {
   let newCartArr = []; //1. needed to create a whole new fresh cart array, but w/o the unwanted cart item
 
@@ -71,8 +68,7 @@ export function rmItemFromCartArr(theItemID) {
   saveToStorage();
 }
 
-//            //            //            CALC TOT QT OF ALL ITEMS IN CART           //            //            //
-
+//            //            CALC TOT QT OF ALL ITEMS IN CART            //            //
 export function calcCartQt() {
   let runningTotQt = 0;
   cart.forEach((item) => {
@@ -81,8 +77,7 @@ export function calcCartQt() {
   return runningTotQt;
 }
 
-//            //            //            UPD NEW QT AFTER CLICKING/PRESSING ENTER ON SAVE            //            //            //
-
+//            //            UPD NEW QT AFTER CLICKING/PRESSING ENTER ON SAVE            //            //
 export function updQtAfterSaving(prodID, newQt) { //0. Export the function from cart.js and import it into the checkout.html file
   //1. Recieve product ID and the new quantity
 
@@ -100,9 +95,7 @@ export function updQtAfterSaving(prodID, newQt) { //0. Export the function from 
   saveToStorage();
 }
 
-
-//            //            //            UPDATING THE DELIVERY OPTION (making deliv options on checkout.js page interactive)          //            //            //
-
+//            //            UPDATING THE DELIVERY OPTION (making deliv options on checkout.js page interactive)          //            //
 // To upd a delivery option, we need to know the 1. Product to update, and 2. Chosen delivery option 
 export function updDelivOption(prodId, delivId) {
   let theCorrectCartItem; //declared outside of forEach so, that it can be used again
