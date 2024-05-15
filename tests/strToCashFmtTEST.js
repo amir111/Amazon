@@ -4,7 +4,7 @@
 import { convertToCashFormat } from '../scripts/utils/strToCashFormat.js'
 
 
-console.log('Test Suite: Converting Str to Cash Format {') //TITLE of Test SUITE 1 (group of related Tests)
+console.log('Test Suite 1: Converting Str to Cash Format {') //TITLE of Test SUITE 1 (group of related Tests)
 
 //Testing a specific situation. "Situation" same thing as saying "test case". 
 // Test case 1 (basic)
@@ -41,3 +41,5 @@ if (convertToCashFormat(2000.4) === '20.00') {
 } else {
   console.log('failed TC4');
 }
+
+console.log('} END OF TEST SUITE 1')
