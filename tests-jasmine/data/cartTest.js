@@ -16,23 +16,22 @@ describe("Test Suite 1, AddToCart", () => {
       }])
     })
     
-    updCartFromLocStorage(); //WHY DO WE NEED THIS IS WE HAVE SPYON FOR LOCALSTORAGE GETITEM AND SETITEM? 
+    updCartFromLocStorage(); //Q: WHY DO WE NEED THIS IS WE HAVE SPYON FOR LOCALSTORAGE GETITEM AND SETITEM? 
 
     addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
 
     expect(cart.length).toEqual(1);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(cart[0].id).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
-    //only thing diff is quantity should be 2 b/c we are adding to an already EXISTING item
+    //only thing diff: Qnty should be 2 bc we're adding +1 to an already EXISTING item
     expect(cart[0].quantity).toEqual(2)
   });
-
 
   //      //      //      TEST 2 (aka SPEC 2)      //      //      //
 
   it("Test name2, The Else condition, Add a NEW, not previously found item to qt", () => {
-    //creating a mock of localStorage.setItem() bc we don't want the orig code to be altered
-    //We can't see what localStorage.setItem has, only if has been called or not. And if called, we can tell .toHaveBeenCalledTimes() the amount of times it was called using spyOn
+    //created mock of localStorage.setItem() bc we don't want the orig code to be altered. Don't want localStorage actually saving anything from test code.
+    //Can't see what localStorage.setItem has, only if has been called or not. If called, .toHaveBeenCalledTimes() gives # of times it was called using spyOn
     spyOn(localStorage, 'setItem');
 
     //mocking (aka overwriting) localStorage.getItem() and overwriting it to return what we want (and we want an empty array for now)
@@ -49,7 +48,7 @@ describe("Test Suite 1, AddToCart", () => {
     addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
     expect(cart.length).toEqual(1);
 
-    //expect gives object, and object has some features it can use (like above .toEqual())
+    //expect gives object, and object has some features it can use (like above .toEqual()) or in this case, .toHaveBeenCalledTimes()
     //this will only work if localStorage.setItem has been spyOn()-ed. It will show how many times the localStorage.setItem has been called
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
 
