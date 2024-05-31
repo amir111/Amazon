@@ -1,19 +1,30 @@
 //Using localStorage to get/save cart state when changing page to page (i.e. from home page to checkout page and back again)
-export let cart = JSON.parse(localStorage.getItem('anyName'))
 
-//            //            DEFAULT CREATION OF CART            //            //
-//if cart does NOT exist, make a default list of items, by assigning this arrOfObjs to cart
-if (!cart) {
-  cart = [{
-    id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-    quantity: 2, 
-    deliveryOptionId: '1'
-  }, {
-    id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-    quantity: 1, 
-    deliveryOptionId: '3'
-  }];
-}
+//creating cart variable 
+export let cart;
+
+//call upon start, so  it runs at least 1x 
+updCartFromLocStorage();
+
+//created "updCartFromStorage()" fnc bc need for jasmine testing to reload the cart
+export function updCartFromLocStorage() {
+  cart = JSON.parse(localStorage.getItem('anyName'))
+
+  //            //            DEFAULT CREATION OF CART            //            //
+  //if cart does NOT exist, make a default list of items, by assigning this arrOfObjs to cart
+  if (!cart) {
+    cart = [{
+      id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity: 2, 
+      deliveryOptionId: '1'
+    }, {
+      id: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+      quantity: 1, 
+      deliveryOptionId: '3'
+    }];
+  }
+};
+
 
 //            //            SAVING TO LOCALSTORAGE           //            //
 
@@ -33,9 +44,9 @@ export function addToCart(prodID, prodName) {
       i = item; //store item in 'i' for later use
       // console.log(item)
     }
-  })
+  });
 
-  if (repeatedItem) { //if repeatedItem exits, add +1 to the items qt
+  if (repeatedItem) { //if repeatedItem exits in the cart, add +1 to the items qt
     i.quantity++; //note: if we type "item.quantity++", it'll say item not defined. B/c item is local to forEach but 'i' was declared outside of forEach, and since forEach already ran, 'i' currently contains item's value.
   } else { //else create that item in the cart ...also added default delivery option deliveryOptionID: '1'
     cart.push({
@@ -43,7 +54,7 @@ export function addToCart(prodID, prodName) {
       productName: prodName,
       quantity: 1, 
       deliveryOptionId: '1'
-    })
+    });
   }
 
   //cart was altered, so save state in localStorage
