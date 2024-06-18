@@ -28,6 +28,7 @@ import deliveryOptions from "../../data/deliveryOptions.js";
 //IF an external lib doesn't have an esm version, then just use <script> tags
 // ESM VERSION ALLOWS YOU TO USE JS MODULES and import directly into .js file (instead of using <script> tags in the .html file that is required in libs that do not have esm versions.)
 
+//renderOrderSummary() is the whole left area 'Review your order', w/the item picture, delivery date, item name, price, qt, and delivery options. 
 export function renderOrderSummary() {
   //           //           //            GENERATING CART HTML SUMMARY            //           //           //            
   let cartSummary = '';

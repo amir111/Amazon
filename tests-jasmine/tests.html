@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Jasmine Spec Runner v5.1.1</title>
@@ -31,5 +32,13 @@
 </head>
 
 <body>
+  <!-- Create a div container, then create an elt. -->
+  <!-- We created a div container, so that we won't modify the whole body. B/c the body might contain our test results from Jasmine. That's why we put everything inside a container. -->
+  <!-- This div is a container for all of our test code. -->
+  <!-- Now get this container into our test, we can do that via 
+  document.querySelector(".some-container-name") -->
+  <div class="js-test-container">
+  </div>
 </body>
+
 </html>
