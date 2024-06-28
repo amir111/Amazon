@@ -32,6 +32,7 @@ import deliveryOptions from "../../data/deliveryOptions.js";
 export function renderOrderSummary() {
   //           //           //            GENERATING CART HTML SUMMARY            //           //           //            
   let cartSummary = '';
+
   cart.forEach((cartItem) => {
     let matchedProd;
 
@@ -55,7 +56,11 @@ export function renderOrderSummary() {
     let durysFormat = dayOfArrival.format('dddd, MMMM D');
 
     cartSummary +=
-      ` <div class="cart-item-container js-cart-item-container-${matchedProd.id}">
+      ` <div class="
+          cart-item-container 
+          test-js-cart-item-container
+          js-cart-item-container-${matchedProd.id}
+        ">
           <div class="delivery-date">
             Delivery date: ${durysFormat}
           </div>
@@ -71,7 +76,10 @@ export function renderOrderSummary() {
             <div class="product-price">
             $${convertToCashFormat(matchedProd.priceCents)}
             </div>
-            <div class="product-quantity">
+            <div class="
+              product-quantity
+              test-js-product-quantity-${matchedProd.id}
+            ">
               <span>
                 Quantity: <span class="quantity-label js-qt-display-area-${matchedProd.id}">${cartItem.quantity}</span>
               </span>
@@ -80,7 +88,9 @@ export function renderOrderSummary() {
               </span>
               <input class="quantity-input js-input-${matchedProd.id}" data-prdct-id='${matchedProd.id}'>
               <span class="save-qt link-primary js-save-btn" data-prdct-id='${matchedProd.id}'>Save</span>
-              <span class="delete-quantity-link link-primary js-delete-btn" data-prdct-id='${matchedProd.id}'>
+              <span class="delete-quantity-link link-primary js-delete-btn
+              test-js-delete-link-${matchedProd.id}" 
+              data-prdct-id='${matchedProd.id}'>
                 Delete
               </span>
             </div>
@@ -288,7 +298,7 @@ export function renderOrderSummary() {
   function updateCartQuantityCheckoutPage() {
     //CALC QT OF ITEMS IN CART AND DISPLAY (L SIDE OF PAGE)
     let qt = calcCartQt();
-    document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = qt + ' items'
+    document.querySelector('.js-checkout-header-return-home-link-displayQt').innerHTML = qt + ' items';
 
     // added later on 
     // REFRESHES ALL PRICE CALCS ON THE (R SIDE OF CHECKOUT PAGE)
@@ -316,7 +326,7 @@ export function renderOrderSummary() {
       // updateCartQuantityCheckoutPage(); //you can also call daHtml() which will do the same
       // daHtml();
       // Finally changed to renderOrderSummary func, instead of calling updateCartQuantityCheckoutPage() or daHtml(), b/c those fncs don't change the L side of screen on top each product where it displays interactively with each radio btn pressed - "Delivery Date: Date".
-      renderOrderSummary();  
+      renderOrderSummary();
     })
   });
 }

@@ -16,14 +16,15 @@ describe("Test Suite 1, AddToCart", () => {
       }])
     })
     
-    updCartFromLocStorage(); //Q: WHY DO WE NEED THIS IS WE HAVE SPYON FOR LOCALSTORAGE GETITEM AND SETITEM? 
+    updCartFromLocStorage(); //Q: WHY DO WE NEED THIS IF WE HAVE SPYON FOR LOCALSTORAGE GETITEM AND SETITEM? 
 
     addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
 
-    expect(cart.length).toEqual(1);
+    //cart length is still 1, b/c we just add qt to and exisiting item
+    expect(cart.length).toEqual(1); 
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(cart[0].id).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
-    //only thing diff: Qnty should be 2 bc we're adding +1 to an already EXISTING item
+    //only thing diff: Qt 2 bc we're adding +1 to an already EXISTING item
     expect(cart[0].quantity).toEqual(2)
   });
 
