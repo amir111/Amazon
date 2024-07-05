@@ -1,5 +1,5 @@
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
-import { updCartFromLocStorage } from "../../data/cart.js";
+import { updCartFromLocStorage, cart } from "../../data/cart.js";
 
 //       //       Checks if page rendered correctly       //       //
 describe('Test suite: renderOrderSummary', () => {
@@ -44,10 +44,17 @@ describe('Test suite: renderOrderSummary', () => {
     expect(
       document.querySelector(`.test-js-product-quantity-${prodId2}`).innerText
     ).toContain('Quantity: 1');
+
+    //Removes all html on the test page that opens up, so that all the html is not displayed on the page anymore. 
+    //It's recommended not to rm it while testing so you can physically see elements being properly displayed, deleted, counted etc.
+    document.querySelector('.js-test-container').innerHTML = ``;
   })
 
-  // 
   it('new test to see if delete btn works', () => {
+    //mocking localStorage.setItem
+    spyOn(localStorage, 'setItem')
+    
+    // this part was previously getting me stuck with error cannot set null .innerHTML, so just added the two missing classes below
     document.querySelector('.js-test-container').innerHTML = `
     <div class="js-dom-order-summary"></div>
     <div class="js-checkout-header-return-home-link-displayQt"></div>
@@ -72,7 +79,31 @@ describe('Test suite: renderOrderSummary', () => {
 
     renderOrderSummary();
 
-    //new method called .click(), which will click delete btn, thus rmving elt
-    document.querySelector(`.test-js-delete-link-${prodId1}`).click()
+    //new property called .click(), which will click delete btn, thus rmving elt
+    document.querySelector(`.test-js-delete-btn-${prodId1}`).click();
+
+    expect(
+      document.querySelectorAll('.test-js-cart-item-container').length
+    ).toEqual(1);
+
+    //check that first prod was deleted off the page (searching for it should equal null)
+    expect(
+      document.querySelector(`.js-cart-item-container-${prodId1}`)
+    ).toEqual(null);
+
+    //check to make sure second item is still on the page
+    //here is a new property we use called .not ,,,and .not.equal(null) means we are making sure that the elt is not null (which means it exists), thus it exist on the page.
+    expect(
+      document.querySelector(`.js-cart-item-container-${prodId2}`).length
+    ).not.toEqual(null)
+
+    //     //     //     CART     //     //     //
+    //now we'll check if cart is updating properly 
+
+    //first check that the cart array is the length of 1
+    expect(cart.length).toEqual(1)
+
+    //second check to make sure the cart's first item's id is equal to prodId2
+    expect(cart[0].id).toEqual(prodId2);
   })
 });
