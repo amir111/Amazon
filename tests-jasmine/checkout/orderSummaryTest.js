@@ -3,57 +3,13 @@ import { updCartFromLocStorage, cart } from "../../data/cart.js";
 
 //       //       Checks if page rendered correctly       //       //
 describe('Test suite: renderOrderSummary', () => {
-  it('correctly displays the cart', () => {
-    document.querySelector('.js-test-container').innerHTML = `
-    <div class="js-dom-order-summary"></div>
-    <div class="js-checkout-header-return-home-link-displayQt"></div>
-    <div class="js-payment-summary"></div>
-    `;
 
-    const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'
-    const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
-
-    spyOn(localStorage, 'getItem').and.callFake(() => {
-      return JSON.stringify([{
-        id: prodId1,
-        quantity: 2,
-        deliveryOptionId: '1'
-      }, {
-        id: prodId2,
-        quantity: 1,
-        deliveryOptionId: '3'
-      }])
-    })
-    updCartFromLocStorage(); //Q: WHY DO WE NEED THIS IF WE HAVE SPYON FOR LOCALSTORAGE GETITEM AND SETITEM? 
-
-    renderOrderSummary();
-
-    //check if you have two elts on page
-    expect(
-      document.querySelectorAll('.test-js-cart-item-container').length
-      //gives an arr of elts 
-      //add .length to end of it, and then .toEqual(2) at end of this expect
-      //to check if length = 2, which will mean two elts are on page
-    ).toEqual(2)
-
-    //expect (thisElt.innerText) contains, anywhere, the following (thisExactString)
-    expect(
-      document.querySelector(`.test-js-product-quantity-${prodId1}`).innerText
-    ).toContain('Quantity: 2');
-
-    expect(
-      document.querySelector(`.test-js-product-quantity-${prodId2}`).innerText
-    ).toContain('Quantity: 1');
-
-    //Removes all html on the test page that opens up, so that all the html is not displayed on the page anymore. 
-    //It's recommended not to rm it while testing so you can physically see elements being properly displayed, deleted, counted etc.
-    document.querySelector('.js-test-container').innerHTML = ``;
-  })
-
-  it('new test to see if delete btn works', () => {
+  //beforeEach() is a built-in Jasmine func that calls another fnc inside of it. That inner fnc will have code that we want to run before each of our tests. 
+  //beforeEach() hook allows us to share code and decrease redundant code duplication
+  beforeEach(() => {
     //mocking localStorage.setItem
     spyOn(localStorage, 'setItem')
-    
+
     // this part was previously getting me stuck with error cannot set null .innerHTML, so just added the two missing classes below
     document.querySelector('.js-test-container').innerHTML = `
     <div class="js-dom-order-summary"></div>
@@ -78,6 +34,40 @@ describe('Test suite: renderOrderSummary', () => {
     updCartFromLocStorage();
 
     renderOrderSummary();
+  })
+
+  //              //              //              Suite 1, Test 1              //              //              //
+  it('correctly displays the cart', () => {
+    const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'
+    const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
+
+    //check if you have two elts on page
+    expect(
+      document.querySelectorAll('.test-js-cart-item-container').length
+      //gives an arr of elts 
+      //add .length to end of it, and then .toEqual(2) at end of this expect
+      //to check if length = 2, which will mean two elts are on page
+    ).toEqual(2)
+
+    //expect (thisElt.innerText) contains, anywhere, the following (thisExactString)
+    expect(
+      document.querySelector(`.test-js-product-quantity-${prodId1}`).innerText
+    ).toContain('Quantity: 2');
+
+    expect(
+      document.querySelector(`.test-js-product-quantity-${prodId2}`).innerText
+    ).toContain('Quantity: 1');
+
+    //              //              Removal of html on test page that opens up, for prettiness              //              //
+    //html is not displayed on the page anymore. 
+    //Recommended not to rm the html while testing so you can physically see elements being properly displayed, deleted, counted etc.
+    document.querySelector('.js-test-container').innerHTML = ``;
+  })
+
+  //              //              //              Suite 1, Test 2              //              //              //
+  it('new test to see if delete btn works', () => {
+    const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'
+    const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
 
     //new property called .click(), which will click delete btn, thus rmving elt
     document.querySelector(`.test-js-delete-btn-${prodId1}`).click();
