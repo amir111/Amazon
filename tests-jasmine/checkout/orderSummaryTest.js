@@ -1,8 +1,10 @@
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 import { updCartFromLocStorage, cart } from "../../data/cart.js";
 
-//       //       Checks if page rendered correctly       //       //
+//       //       Suite 1: Checks if page rendered correctly       //       //
 describe('Test suite: renderOrderSummary', () => {
+  const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
+  const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
 
   //beforeEach() is a built-in Jasmine func that calls another fnc inside of it. That inner fnc will have code that we want to run before each of our tests. 
   //beforeEach() hook allows us to share code and decrease redundant code duplication
@@ -17,9 +19,7 @@ describe('Test suite: renderOrderSummary', () => {
     <div class="js-payment-summary"></div>
     `;
 
-    const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'
-    const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
-
+    //mock
     spyOn(localStorage, 'getItem').and.callFake(() => {
       return JSON.stringify([{
         id: prodId1,
@@ -34,13 +34,10 @@ describe('Test suite: renderOrderSummary', () => {
     updCartFromLocStorage();
 
     renderOrderSummary();
-  })
+  });
 
   //              //              //              Suite 1, Test 1              //              //              //
   it('correctly displays the cart', () => {
-    const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'
-    const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
-
     //check if you have two elts on page
     expect(
       document.querySelectorAll('.test-js-cart-item-container').length
@@ -62,13 +59,10 @@ describe('Test suite: renderOrderSummary', () => {
     //html is not displayed on the page anymore. 
     //Recommended not to rm the html while testing so you can physically see elements being properly displayed, deleted, counted etc.
     document.querySelector('.js-test-container').innerHTML = ``;
-  })
+  });
 
   //              //              //              Suite 1, Test 2              //              //              //
   it('new test to see if delete btn works', () => {
-    const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'
-    const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d'
-
     //new property called .click(), which will click delete btn, thus rmving elt
     document.querySelector(`.test-js-delete-btn-${prodId1}`).click();
 
@@ -95,5 +89,5 @@ describe('Test suite: renderOrderSummary', () => {
 
     //second check to make sure the cart's first item's id is equal to prodId2
     expect(cart[0].id).toEqual(prodId2);
-  })
+  });
 });
