@@ -1,4 +1,4 @@
-import { cart, addToCart, updCartFromLocStorage } from "../../data/cart.js";
+import { cart, addToCart, updCartFromLocStorage } from "../../../data/cart.js";
 
 describe("Test Suite 1, AddToCart", () => {
 

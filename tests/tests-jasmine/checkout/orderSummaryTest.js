@@ -1,12 +1,12 @@
-import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
-import { updCartFromLocStorage, cart } from "../../data/cart.js";
+import { renderOrderSummary } from "../../../scripts/checkout/orderSummary.js";
+import { updCartFromLocStorage, cart } from "../../../data/cart.js";
 
 //       //       Suite 1: Checks if page rendered correctly       //       //
 describe('Test suite: renderOrderSummary', () => {
   const prodId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
   const prodId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
 
-  //beforeEach() is a built-in Jasmine func that calls another fnc inside of it. That inner fnc will have code that we want to run before each of our tests. 
+  //beforeEach() is a built-in Jasmine func that calls another fnc inside of it. That inner fnc will have code that we want to run before EACH of our tests. 
   //beforeEach() hook allows us to share code and decrease redundant code duplication
   beforeEach(() => {
     //mocking localStorage.setItem
@@ -36,6 +36,14 @@ describe('Test suite: renderOrderSummary', () => {
     renderOrderSummary();
   });
 
+  //runs after the end of EACH test. 
+  afterEach(() => {
+    //              //              Removal of html on test page that opens up, for prettiness              //              //
+    //html is not displayed on the page anymore. 
+    //Recommended not to rm the html while testing so you can physically see elements being properly displayed, deleted, counted etc.
+    document.querySelector('.js-test-container').innerHTML = ``;
+  })
+
   //              //              //              Suite 1, Test 1              //              //              //
   it('correctly displays the cart', () => {
     //check if you have two elts on page
@@ -54,11 +62,6 @@ describe('Test suite: renderOrderSummary', () => {
     expect(
       document.querySelector(`.test-js-product-quantity-${prodId2}`).innerText
     ).toContain('Quantity: 1');
-
-    //              //              Removal of html on test page that opens up, for prettiness              //              //
-    //html is not displayed on the page anymore. 
-    //Recommended not to rm the html while testing so you can physically see elements being properly displayed, deleted, counted etc.
-    document.querySelector('.js-test-container').innerHTML = ``;
   });
 
   //              //              //              Suite 1, Test 2              //              //              //

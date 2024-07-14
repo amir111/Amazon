@@ -1,7 +1,7 @@
 //Some code to test strToCashFormat.js to run an automated test (automated testing = using code to test code)
 //Call this file from test.html b/c .js files can't just run themselves. 
 
-import { convertToCashFormat } from '../scripts/utils/strToCashFormat.js'
+import { convertToCashFormat } from '../../scripts/utils/strToCashFormat.js'
 
 
 console.log('Test Suite 1: Converting Str to Cash Format {') //TITLE of Test SUITE 1 (group of related Tests)

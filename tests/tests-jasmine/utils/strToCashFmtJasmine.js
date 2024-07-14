@@ -1,4 +1,4 @@
-import { convertToCashFormat } from "../../scripts/utils/strToCashFormat.js";
+import { convertToCashFormat } from "../../../scripts/utils/strToCashFormat.js";
 
 // describe() is a keyword provided by Jasmine. 
 // It is a fnc that creates a test suite (test group)
