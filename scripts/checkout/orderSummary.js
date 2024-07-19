@@ -70,7 +70,10 @@ export function renderOrderSummary() {
             src="${matchedProd.image}">
 
           <div class="cart-item-details">
-            <div class="product-name">
+            <div class="
+            product-name 
+            test-name-${matchedProd.id}
+            ">
             ${matchedProd.name}
             </div>
             <div class="product-price">

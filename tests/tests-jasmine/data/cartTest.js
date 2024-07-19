@@ -2,12 +2,19 @@ import { cart, addToCart, updCartFromLocStorage } from "../../../data/cart.js";
 
 describe("Test Suite 1, AddToCart", () => {
 
+  //dom zadanie 16e
+  beforeEach(()=>{
+    spyOn(localStorage, 'setItem');
+  })
+
+
   //      //      //      TEST 1 (aka SPEC 1)      //      //      //
 
   it("Test name1, The IF statement, Adds an ALREADY EXISTING item as +1 to cart qt", () => {
     
-    spyOn(localStorage, 'setItem');
+    // spyOn(localStorage, 'setItem');
 
+    //'and' built-in Jasmine keyword, will define what spyOn will do when spyOn is invoked.
     spyOn(localStorage, "getItem").and.callFake(() => {
       return JSON.stringify([{
         id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
@@ -26,6 +33,13 @@ describe("Test Suite 1, AddToCart", () => {
     expect(cart[0].id).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
     //only thing diff: Qt 2 bc we're adding +1 to an already EXISTING item
     expect(cart[0].quantity).toEqual(2)
+
+    //Dom zadanie 16c
+    expect(localStorage.setItem).toHaveBeenCalledWith('anyName', JSON.stringify([{
+        id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId: '1'
+      }]))
   });
 
   //      //      //      TEST 2 (aka SPEC 2)      //      //      //
@@ -33,9 +47,10 @@ describe("Test Suite 1, AddToCart", () => {
   it("Test name2, The Else condition, Add a NEW, not previously found item to qt", () => {
     //created mock of localStorage.setItem() bc we don't want the orig code to be altered. Don't want localStorage actually saving anything from test code.
     //Can't see what localStorage.setItem has, only if has been called or not. If called, .toHaveBeenCalledTimes() gives # of times it was called using spyOn
-    spyOn(localStorage, 'setItem');
+    // spyOn(localStorage, 'setItem');
 
-    //mocking (aka overwriting) localStorage.getItem() and overwriting it to return what we want (and we want an empty array for now)
+    // 1. mocking (aka overwriting) localStorage.getItem() and overwriting it to return what we want (and we want an empty array for now)
+    // 2. 'and' built-in Jasmine keyword, will define what spyOn will do when spyOn is invoked.
     spyOn(localStorage, 'getItem').and.callFake(() => {
       return JSON.stringify([]);
     });
@@ -60,5 +75,12 @@ describe("Test Suite 1, AddToCart", () => {
 
     //checking to make sure the quantity of the first product added to cart is 1 
     expect(cart[0].quantity).toEqual(1)
+
+    //dom zadanie 16d
+    expect(localStorage.setItem).toHaveBeenCalledWith('anyName', JSON.stringify([{
+      id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+      quantity: 1,
+      deliveryOptionId: '1'
+    }]))
   });
 });

@@ -62,6 +62,11 @@ describe('Test suite: renderOrderSummary', () => {
     expect(
       document.querySelector(`.test-js-product-quantity-${prodId2}`).innerText
     ).toContain('Quantity: 1');
+
+    //dom zadanie 16g
+    expect(
+      document.querySelector(`.test-name-${prodId1}`).innerText
+    ).toEqual('Black and Gray Athletic Cotton Socks - 6 Pairs')
   });
 
   //              //              //              Suite 1, Test 2              //              //              //

@@ -26,9 +26,9 @@ if (convertToCashFormat(0) === '0.00') {
 //Test case 3 (edge case 2)
 console.log('- Rounds up correctly to the nearest cent:'); //TITLE of Test case 3 (edge case 2) 
 if (convertToCashFormat(2000.5) === '20.01') {
-  console.log('passed');
+  console.log('passed TC3');
 } else {
-  console.log('failed');
+  console.log('failed TC3');
 }
 
 //Q: So how many test cases do we need? 
@@ -41,5 +41,13 @@ if (convertToCashFormat(2000.4) === '20.00') {
 } else {
   console.log('failed TC4');
 }
+
+//TC 5 
+console.log('- Correctly rounds negative numbers:');
+if (convertToCashFormat(-2000) === '-20.00') {
+  console.log('passed TC5');
+} else {
+  console.log('failed TC5');
+};
 
 console.log('} END OF TEST SUITE 1')

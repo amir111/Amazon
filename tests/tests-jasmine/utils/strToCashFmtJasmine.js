@@ -19,4 +19,12 @@ describe('Test Suite 1: Converting Str to Cash Format', () => {
   it('Rounds up correctly to the nearest cent, (edge case N2) ', () => {
     expect(convertToCashFormat(2000.5)).toEqual('20.01')
   })
+
+  it('Correctly rounds down', () => {
+    expect(convertToCashFormat(2000.4)).toEqual('20.00')
+  })
+
+  it('Correctly rounds negative numbers', () => {
+    expect(convertToCashFormat(-2000.9)).toEqual('-20.01')
+  })
 });
