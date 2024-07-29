@@ -3,7 +3,7 @@
 //creating cart variable 
 export let cart;
 
-//call upon start, so  it runs at least 1x 
+//call upon start, so it runs at least 1x 
 updCartFromLocStorage();
 
 //created "updCartFromStorage()" fnc bc need for jasmine testing to reload the cart
