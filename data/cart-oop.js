@@ -134,8 +134,7 @@ function Cart(localStorageKey) {
 
 let regularShoppingCart = Cart('anyName-oop'); 
 let bizCart = Cart('anyName-oop-biz');
-//sending different args to Cart(), thus we can have different keys in localSt,
-//thus, allowing us to have diff data per cart
+//sending diff args to Cart(), thus we can have diff keys in localSt, thus, allowing us to have diff data per cart
 
 // call upon start, so it runs at least 1x 
 //oop, added `cart.` to the front to call some function that was declared inside the oop Object called Cart()

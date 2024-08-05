@@ -9,12 +9,12 @@
 class CartClass {
   //adding cartItemz as a property to CartClass
   cartItemz = undefined;
-
-  localStorageKey 
+  //adding a prop called localStorageKey to every Obj we create
+  localStorageKey = undefined;
 
   //a method 
   updCartFromLocStorage() {
-    this.cartItemz = JSON.parse(localStorage.getItem(localStorageKey))
+    this.cartItemz = JSON.parse(localStorage.getItem(this.localStorageKey))
     //this.cartItemz is the same as cart.cartItemz
 
     // DEFAULT CREATION OF CART
@@ -32,7 +32,7 @@ class CartClass {
   };
 
   saveToStorage() {
-    localStorage.setItem(localStorageKey, JSON.stringify(this.cartItemz));
+    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItemz));
   };
 
   // ADDING AN ITEM TO CART
@@ -131,13 +131,22 @@ class CartClass {
 }
 
 
-function Cart(localStorageKey) {
-}
+//old way
+//let regularShoppingCart = Cart('anyName-oop');
+//old way 
+// let bizCart = Cart('anyName-oop-biz');
 
-let regularShoppingCart = Cart('anyName-oop');
-let bizCart = Cart('anyName-oop-biz');
-//sending different args to Cart(), thus we can have different keys in localSt,
-//thus, allowing us to have diff data per cart
+//new way 1a (Class way)
+let regularShoppingCart = new CartClass(); //"regularShoppingCart" is an Object we are creating using the Class 'CartClass'. Inside of this object, there will be methods like rmFromStorage() and others...
+//Each objects created using the Class, are called "an instance of the class"
+//new way 2a (Class way)
+let bizCart = new CartClass();
+
+//new way 1b
+regularShoppingCart.localStorageKey = 'anyName-oop'
+//new way 2b 
+bizCart.localStorageKey = 'anyName-oop-biz'
+
 
 // call upon start, so it runs at least 1x 
 //oop, added `cart.` to the front to call some function that was declared inside the oop Object called Cart()
