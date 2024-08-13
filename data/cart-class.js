@@ -4,18 +4,24 @@
 //Class, we give it properties and methods
 //Every obj we generate using the CartClass will have it's properties and methods 
 
-//
-
 class CartClass {
   //adding cartItemz as a property to CartClass
   cartItemz = undefined;
   //adding a prop called localStorageKey to every Obj we create
   localStorageKey = undefined;
 
+  //classes have a special feature called a constructor, it auto runs when an obj is created using a class. 
+  //it can take in parameters
+  //basically gives setup code for every obj created using class
+  constructor(localStorageKey) {
+    this.localStorageKey = localStorageKey;
+    this.updCartFromLocStorage();
+  }
+
   //a method 
   updCartFromLocStorage() {
     this.cartItemz = JSON.parse(localStorage.getItem(this.localStorageKey))
-    //this.cartItemz is the same as cart.cartItemz
+    //this.cartItemz is the same as cart.cartItemz, "this" keyword is just universal for all objects, (b/c not all objectNames will be 'cart')
 
     // DEFAULT CREATION OF CART
     if (!this.cartItemz) {
@@ -137,21 +143,27 @@ class CartClass {
 // let bizCart = Cart('anyName-oop-biz');
 
 //new way 1a (Class way)
-let regularShoppingCart = new CartClass(); //"regularShoppingCart" is an Object we are creating using the Class 'CartClass'. Inside of this object, there will be methods like rmFromStorage() and others...
+let regularShoppingCart = new CartClass('anyName-oop'); //"regularShoppingCart" is an Object we are creating using the Class 'CartClass'. Inside of this object, there will be methods like rmFromStorage() and others...
 //Each objects created using the Class, are called "an instance of the class"
 //new way 2a (Class way)
-let bizCart = new CartClass();
+let bizCart = new CartClass('anyName-oop-biz');
 
-//new way 1b
-regularShoppingCart.localStorageKey = 'anyName-oop'
+//OLD WAY (w/o constructor)
+//new way 1b, a prop in CartClass called localStorageKey is currently undefined, so we need to set this property based on what type of cart we are creating (reg or biz carts)
+////// regularShoppingCart.localStorageKey = 'anyName-oop';
 //new way 2b 
-bizCart.localStorageKey = 'anyName-oop-biz'
+////// bizCart.localStorageKey = 'anyName-oop-biz';
 
-
+//OLD WAY (w/o constructor)
 // call upon start, so it runs at least 1x 
 //oop, added `cart.` to the front to call some function that was declared inside the oop Object called Cart()
-regularShoppingCart.updCartFromLocStorage();
-bizCart.updCartFromLocStorage();
+//loading from storage, then later console.log it
+///// regularShoppingCart.updCartFromLocStorage();
+///// bizCart.updCartFromLocStorage();
 
 console.log(regularShoppingCart);
 console.log(bizCart);
+
+//to check if obj is instance of a class, use "instanceof"
+//for ex
+console.log(bizCart instanceof CartClass) // <- true
