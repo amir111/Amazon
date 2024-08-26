@@ -8,19 +8,21 @@ class CartClass {
   //adding cartItemz as a property to CartClass
   cartItemz = undefined;
   //adding a prop called localStorageKey to every Obj we create
-  localStorageKey = undefined;
+  #localStorageKey = undefined; //the "#" hash sign, means that localStorageKey is a private property 
 
   //classes have a special feature called a constructor, it auto runs when an obj is created using a class. 
   //it can take in parameters
   //basically gives setup code for every obj created using class
+  //upd, made the p r o p e r t y 'localStorageKey', and the m e t h o d 'updCartFromLocStorage', both private
   constructor(localStorageKey) {
-    this.localStorageKey = localStorageKey;
-    this.updCartFromLocStorage();
+    this.#localStorageKey = localStorageKey;
+    this.#updCartFromLocStorage();
   }
 
   //a method 
-  updCartFromLocStorage() {
-    this.cartItemz = JSON.parse(localStorage.getItem(this.localStorageKey))
+  //upd, made it private using '#' sign
+  #updCartFromLocStorage() {
+    this.cartItemz = JSON.parse(localStorage.getItem(this.#localStorageKey))
     //this.cartItemz is the same as cart.cartItemz, "this" keyword is just universal for all objects, (b/c not all objectNames will be 'cart')
 
     // DEFAULT CREATION OF CART
@@ -38,7 +40,7 @@ class CartClass {
   };
 
   saveToStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItemz));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItemz));
   };
 
   // ADDING AN ITEM TO CART
@@ -161,9 +163,15 @@ let bizCart = new CartClass('anyName-oop-biz');
 ///// regularShoppingCart.updCartFromLocStorage();
 ///// bizCart.updCartFromLocStorage();
 
+
+//making sure the private property #localStorageKey cannot be accessed outside the class 'CartClass', by attempting to change the private property, #localStorageKey's value, into the string 'bbb'
+// cart.#localStorageKey = 'bbb'; //yep, correctly throws err
+// in browser console, 'field' is the same thing as 'property'
+// Browser console error will say smtg like: "field '#localStorageKey' must be declared in an enclosing class (at cart-class.js:166:5)"
+
 console.log(regularShoppingCart);
 console.log(bizCart);
 
 //to check if obj is instance of a class, use "instanceof"
-//for ex
+//see below, for ex:
 console.log(bizCart instanceof CartClass) // <- true
