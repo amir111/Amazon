@@ -1,3 +1,42 @@
+//converting an obj to class
+class ProductClass {
+  // declaring properties each prodct should have
+  // not assigning them anything is shorthand for assigning them the value 'undefined'
+  id;
+  image;
+  name;
+  rating;
+  priceCents; 
+
+  //remember, constructor auto runs when creating new ProductClass
+  constructor(productDetails){
+    this.id = productDetails.id; 
+    this.image = productDetails.image; 
+    this.name = productDetails.name; 
+    this.rating = productDetails.rating; 
+    this.priceCents = productDetails.priceCents; 
+  }
+}
+
+let prod1 = new ProductClass({
+  id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+  image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+  name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+  rating: {
+    stars: 4.5,
+    count: 87
+  },
+  priceCents: 1090,
+  keywords: [
+    "socks",
+    "sports",
+    "apparel"
+  ]
+});
+
+console.log(prod1); //answ: you'll see a class called ProductClass and it'll have 5 properties (id, image, name, rating, priceCents), all set to "undefined".
+
+
 export const listOfProducts = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
