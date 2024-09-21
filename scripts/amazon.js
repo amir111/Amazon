@@ -1,3 +1,5 @@
+//This is the page the creates the home page (you can see all producst in grid pattern, with amazon banner at the top)
+
 //going to generate the html using js
 //each of our products has data (information like: name, img, price etc.)
 
@@ -25,14 +27,14 @@ listOfProducts.forEach(e => {
 
       <div class="product-rating-container">
         <img class="product-rating-stars"
-          src="images/ratings/rating-${e.rating.stars * 10}.png">
+          src="${e.getStarsUrl()}">
         <div class="product-rating-count link-primary">
           ${e.rating.count}
         </div>
       </div>
 
       <div class="product-price">
-        $${convertToCashFormat(e.priceCents)}
+        ${e.getPrice()}
       </div>
 
       <div class="product-quantity-container">

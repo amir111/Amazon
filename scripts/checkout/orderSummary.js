@@ -77,7 +77,7 @@ export function renderOrderSummary() {
             ${matchedProd.name}
             </div>
             <div class="product-price">
-            $${convertToCashFormat(matchedProd.priceCents)}
+            ${matchedProd.getPrice()}
             </div>
             <div class="
               product-quantity

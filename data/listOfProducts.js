@@ -1,3 +1,5 @@
+import convertToCashFormat from "../scripts/utils/strToCashFormat.js";
+
 //converting an obj to class
 class ProductClass {
   // declaring properties each prodct should have
@@ -6,15 +8,26 @@ class ProductClass {
   image;
   name;
   rating;
-  priceCents; 
+  priceCents;
 
   //remember, constructor auto runs when creating new ProductClass
-  constructor(productDetails){
-    this.id = productDetails.id; 
-    this.image = productDetails.image; 
-    this.name = productDetails.name; 
-    this.rating = productDetails.rating; 
-    this.priceCents = productDetails.priceCents; 
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+  //adding some methods to calc a product's rating stars and its price
+  //whenever this functions are called from other parts of our code, 
+  //they will return something, in getStarUrl()'s case, it will return the string with injected this object's stars rating
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+
+  getPrice() {
+    return `$${convertToCashFormat(this.priceCents)}`
   }
 }
 
@@ -33,10 +46,15 @@ let prod1 = new ProductClass({
     "apparel"
   ]
 });
+console.log(prod1); 
+//new answ: you'll see a class called ProductClass and it'll have 5 properties (id, image, name, rating, priceCents), all set to some actual string data
+//old answ: you'll see a class called ProductClass and it'll have 5 properties (id, image, name, rating, priceCents), all set to "undefined".
 
-console.log(prod1); //answ: you'll see a class called ProductClass and it'll have 5 properties (id, image, name, rating, priceCents), all set to "undefined".
 
 
+//added .map() at end of this array of objs
+// .map() loops thru array, and changes it by applying some type of fnc to each element in the array. 
+// .map() returns a new array with altered elts, does nothing on empty elts, and does not change orig array 
 export const listOfProducts = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -696,4 +714,10 @@ export const listOfProducts = [
       "mens"
     ]
   }
-];
+].map((prodElt) => { 
+  return new ProductClass(prodElt)
+});
+
+console.log("wabblewabble")
+console.log(listOfProducts)
+//you'll see an array of 42 elts, with each elt being a ProductClass instead of just an object, as they were previously
